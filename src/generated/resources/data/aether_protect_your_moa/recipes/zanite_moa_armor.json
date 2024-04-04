@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "aether:gems/zanite"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "###",
+    "# #"
+  ],
+  "result": {
+    "item": "aether_protect_your_moa:zanite_moa_armor"
+  },
+  "show_notification": true
+}

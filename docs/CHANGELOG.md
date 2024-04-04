@@ -1,4 +1,4 @@
-# Example Mod - Forge - 1.20.1-1.0.0
+# Protect Your Moa - Forge - 1.20.1-1.0.0
 
 Additions
 

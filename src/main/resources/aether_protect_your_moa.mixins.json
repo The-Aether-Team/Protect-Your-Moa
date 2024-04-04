@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.aetherteam.protectyourmoa.mixin.mixins",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "aether_protect_your_moa.refmap.json",
+  "mixins": [
+    "common.MountableAnimalMixin",
+    "common.ServerGamePacketListenerImplMixin"
+  ],
+  "client": [
+    "client.MultiPlayerGameModeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
