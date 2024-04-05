@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ProtectModelLayers {
     public static final ModelLayerLocation MOA_ARMOR = register("moa", "armor");
+    public static final ModelLayerLocation MOA_CHEST = register("moa", "chest");
 
     private static ModelLayerLocation register(String name, String type) {
         return register(new ResourceLocation(ProtectYourMoa.MODID, name), type);

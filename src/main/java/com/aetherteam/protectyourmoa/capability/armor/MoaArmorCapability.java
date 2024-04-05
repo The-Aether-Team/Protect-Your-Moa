@@ -1,16 +1,15 @@
 package com.aetherteam.protectyourmoa.capability.armor;
 
-import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.network.BasePacket;
 import com.aetherteam.nitrogen.network.PacketRelay;
-import com.aetherteam.protectyourmoa.ProtectYourMoa;
 import com.aetherteam.protectyourmoa.inventory.menu.MoaInventoryMenu;
 import com.aetherteam.protectyourmoa.item.combat.MoaArmorItem;
 import com.aetherteam.protectyourmoa.network.ProtectPacketHandler;
 import com.aetherteam.protectyourmoa.network.packet.MoaArmorSyncPacket;
 import com.aetherteam.protectyourmoa.network.packet.clientbound.OpenMoaInventoryPacket;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
@@ -20,8 +19,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,13 +36,15 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
 
     private final Moa moa;
 
+    private boolean chested;
     private SimpleContainer inventory;
+    private boolean shouldSyncChest;
 
     private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> synchableFunctions = Map.ofEntries(
             Map.entry("equipSaddle", Triple.of(Type.BOOLEAN, (object) -> this.equipSaddle(), this::isSaddled)),
-            Map.entry("equipArmor", Triple.of(Type.ITEM_STACK, (object) -> this.equipArmor((ItemStack) object), this::getArmor))
-//            Map.entry("setArmor", Triple.of(Type.ITEM_STACK, (object) -> this.setArmor((ItemStack) object), this::getArmor)),
-//            Map.entry("setChest", Triple.of(Type.BOOLEAN, (object) -> this.setChest((boolean) object), this::hasChest))
+            Map.entry("equipArmor", Triple.of(Type.ITEM_STACK, (object) -> this.equipArmor((ItemStack) object), this::getArmor)),
+            Map.entry("setChest", Triple.of(Type.BOOLEAN, (object) -> this.setChest((boolean) object), this::hasChest)),
+            Map.entry("setShouldSyncChest", Triple.of(Type.BOOLEAN, (object) -> this.setShouldSyncChest((boolean) object), this::shouldSyncChest))
     );
 
     public MoaArmorCapability(Moa moa) {
@@ -67,6 +66,20 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         if (!this.getInventory().getItem(1).isEmpty()) {
             tag.put("ArmorItem", this.inventory.getItem(1).save(new CompoundTag()));
         }
+        tag.putBoolean("Chested", this.hasChest());
+        if (this.hasChest()) {
+            ListTag list = new ListTag();
+            for (int i = 2; i < this.inventory.getContainerSize(); ++i) {
+                ItemStack itemstack = this.inventory.getItem(i);
+                if (!itemstack.isEmpty()) {
+                    CompoundTag slotTag = new CompoundTag();
+                    slotTag.putByte("Slot", (byte)i);
+                    itemstack.save(slotTag);
+                    list.add(slotTag);
+                }
+            }
+            tag.put("Items", list);
+        }
         return tag;
     }
 
@@ -84,27 +97,40 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
                 this.getInventory().setItem(1, itemstack);
             }
         }
-        this.updateContainerEquipment();
-    }
+        this.setChest(tag.getBoolean("Chested")); //todo chested value isnt getting synced to both sides on world start.
+        if (this.hasChest()) {
+            ListTag list = tag.getList("Items", 10);
 
-    private void createInventory() {
-        SimpleContainer simplecontainer = this.inventory;
-        this.inventory = new SimpleContainer(this.getInventorySize());
-        if (simplecontainer != null) {
-            simplecontainer.removeListener(this);
-            int i = Math.min(simplecontainer.getContainerSize(), this.inventory.getContainerSize());
-
-            for (int j = 0; j < i; ++j) {
-                ItemStack itemstack = simplecontainer.getItem(j);
-                if (!itemstack.isEmpty()) {
-                    this.inventory.setItem(j, itemstack.copy());
+            for(int i = 0; i < list.size(); ++i) {
+                CompoundTag compoundtag = list.getCompound(i);
+                int j = compoundtag.getByte("Slot") & 255;
+                if (j >= 2 && j < this.inventory.getContainerSize()) {
+                    this.inventory.setItem(j, ItemStack.of(compoundtag));
                 }
             }
         }
+        this.updateContainerEquipment();
+    }
 
-        this.inventory.addListener(this);
-//        this.updateContainerEquipment();
-//        this.itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this.inventory));
+    @Override
+    public void onJoinLevel() {
+        if (this.getMoa().level().isClientSide()) {
+            this.setSynched(Direction.SERVER, "setShouldSyncChest", true);
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+        this.syncChest();
+    }
+
+    private void syncChest() {
+        if (!this.getMoa().level().isClientSide()) {
+            if (this.shouldSyncChest()) {
+                this.setSynched(Direction.CLIENT, "setChest", this.hasChest());
+                this.setShouldSyncChest(false);
+            }
+        }
     }
 
     @Override
@@ -145,6 +171,27 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
                 }
             }
         }
+    }
+
+    @Override
+    public void createInventory() {
+        SimpleContainer simplecontainer = this.inventory;
+        this.inventory = new SimpleContainer(this.getInventorySize());
+        if (simplecontainer != null) {
+            simplecontainer.removeListener(this);
+            int i = Math.min(simplecontainer.getContainerSize(), this.inventory.getContainerSize());
+
+            for (int j = 0; j < i; ++j) {
+                ItemStack itemstack = simplecontainer.getItem(j);
+                if (!itemstack.isEmpty()) {
+                    this.inventory.setItem(j, itemstack.copy());
+                }
+            }
+        }
+
+        this.inventory.addListener(this);
+//        this.updateContainerEquipment();
+//        this.itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this.inventory));
     }
 
     @Override
@@ -189,9 +236,25 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         return !this.getMoa().getItemBySlot(EquipmentSlot.CHEST).isEmpty();
     }
 
-    //todo
+    @Override
+    public void setChest(boolean chested) {
+        this.chested = chested;
+        this.createInventory();
+    }
+
+    @Override
     public boolean hasChest() {
-        return false;
+        return this.chested;
+    }
+
+    @Override
+    public void setShouldSyncChest(boolean sync) {
+        this.shouldSyncChest = sync;
+    }
+
+    @Override
+    public boolean shouldSyncChest() {
+        return this.shouldSyncChest;
     }
 
     @Override

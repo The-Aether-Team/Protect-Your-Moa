@@ -6,7 +6,8 @@ import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.protectyourmoa.ProtectYourMoa;
 import com.aetherteam.protectyourmoa.client.renderer.entity.ProtectModelLayers;
 import com.aetherteam.protectyourmoa.client.renderer.entity.layers.MoaArmorLayer;
-import com.aetherteam.protectyourmoa.item.ProtectItems;
+import com.aetherteam.protectyourmoa.client.renderer.entity.layers.MoaChestLayer;
+import com.aetherteam.protectyourmoa.client.renderer.entity.model.MoaChestModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -20,6 +21,7 @@ public class ProtectRenderers {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ProtectModelLayers.MOA_ARMOR, () -> MoaModel.createBodyLayer(new CubeDeformation(0.15F)));
+        event.registerLayerDefinition(ProtectModelLayers.MOA_CHEST, MoaChestModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -27,6 +29,7 @@ public class ProtectRenderers {
         LivingEntityRenderer<Moa, MoaModel> renderer = event.getRenderer(AetherEntityTypes.MOA.get());
         if (renderer != null) {
             renderer.addLayer(new MoaArmorLayer(renderer, Minecraft.getInstance().getEntityModels()));
+            renderer.addLayer(new MoaChestLayer(renderer, Minecraft.getInstance().getEntityModels()));
         }
     }
 }

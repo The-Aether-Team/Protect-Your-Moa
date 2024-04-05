@@ -66,8 +66,7 @@ public class MoaInventoryMenu extends AbstractContainerMenu {
     }
 
     private boolean hasChest(Moa moa) {
-        return false;
-//        return MoaArmor.get(moa).isPresent() && MoaArmor.get(moa).resolve().isPresent() && MoaArmor.get(moa).resolve().get().hasChest();
+        return MoaArmor.get(moa).isPresent() && MoaArmor.get(moa).resolve().isPresent() && MoaArmor.get(moa).resolve().get().hasChest();
     }
 
     public ItemStack quickMoveStack(Player player, int index) {

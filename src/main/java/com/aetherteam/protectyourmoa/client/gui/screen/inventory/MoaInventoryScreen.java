@@ -28,9 +28,9 @@ public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu
         int j = (this.height - this.imageHeight) / 2;
         guiGraphics.blit(HORSE_INVENTORY_LOCATION, i, j, 0, 0, this.imageWidth, this.imageHeight);
         MoaArmor.get(this.moa).ifPresent(moaArmor -> {
-//            if (moaArmor.hasChest()) {
-//                guiGraphics.blit(HORSE_INVENTORY_LOCATION, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
-//            }
+            if (moaArmor.hasChest()) {
+                guiGraphics.blit(HORSE_INVENTORY_LOCATION, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
+            }
         });
 
         if (this.moa.isSaddleable()) {

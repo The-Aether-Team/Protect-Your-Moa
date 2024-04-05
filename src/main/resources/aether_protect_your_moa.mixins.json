@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "aether_protect_your_moa.refmap.json",
   "mixins": [
+    "client.accessor.LayerDefinitionAccessor",
     "common.MountableAnimalMixin",
     "common.ServerGamePacketListenerImplMixin"
   ],

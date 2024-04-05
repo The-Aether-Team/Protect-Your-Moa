@@ -6,7 +6,6 @@ import com.aetherteam.protectyourmoa.capability.ProtectCapabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -17,6 +16,10 @@ public interface MoaArmor extends INBTSynchable<CompoundTag> {
         return moa.getCapability(ProtectCapabilities.MOA_ARMOR_CAPABILITY);
     }
 
+    void onJoinLevel();
+    void onUpdate();
+
+    void createInventory();
     void openInventory(ServerPlayer player, Moa moa);
 
     void equipSaddle();
@@ -26,6 +29,12 @@ public interface MoaArmor extends INBTSynchable<CompoundTag> {
     void setArmor(ItemStack itemStack);
     ItemStack getArmor();
     boolean isWearingArmor();
+
+    void setChest(boolean chested);
+    boolean hasChest();
+
+    void setShouldSyncChest(boolean sync);
+    boolean shouldSyncChest();
 
     SimpleContainer getInventory();
 
