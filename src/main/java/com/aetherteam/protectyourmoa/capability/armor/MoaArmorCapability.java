@@ -97,7 +97,7 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
                 this.getInventory().setItem(1, itemstack);
             }
         }
-        this.setChest(tag.getBoolean("Chested")); //todo chested value isnt getting synced to both sides on world start.
+        this.setChest(tag.getBoolean("Chested"));
         if (this.hasChest()) {
             ListTag list = tag.getList("Items", 10);
 

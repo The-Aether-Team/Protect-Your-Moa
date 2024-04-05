@@ -39,7 +39,7 @@ public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu
 
         guiGraphics.blit(HORSE_INVENTORY_LOCATION, i + 7, j + 35, 0, this.imageHeight + 54, 18, 18);
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, i + 51, j + 60, 17, (float)(i + 51) - this.xMouse, (float)(j + 75 - 50) - this.yMouse, this.moa);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, i + 51, j + 63, 17, (float)(i + 51) - this.xMouse, (float)(j + 75 - 47) - this.yMouse, this.moa);
     }
 
     /**
