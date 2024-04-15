@@ -1,5 +1,9 @@
 {
+  "item.aether_protect_your_moa.diamond_moa_armor": "Diamond Moa Armor",
+  "item.aether_protect_your_moa.golden_moa_armor": "Golden Moa Armor",
   "item.aether_protect_your_moa.gravitite_moa_armor": "Gravitite Moa Armor",
+  "item.aether_protect_your_moa.iron_moa_armor": "Iron Moa Armor",
+  "item.aether_protect_your_moa.leather_moa_armor": "Leather Moa Armor",
   "item.aether_protect_your_moa.zanite_moa_armor": "Zanite Moa Armor",
   "pack.aether_protect_your_moa.mod.description": "The Aether: Protect Your Moa Resources"
 }

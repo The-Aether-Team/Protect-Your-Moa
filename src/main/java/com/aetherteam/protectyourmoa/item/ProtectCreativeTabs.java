@@ -15,7 +15,11 @@ public class ProtectCreativeTabs {
     public static void buildCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
         ResourceKey<CreativeModeTab> tab = event.getTabKey();
         if (tab == AetherCreativeTabs.AETHER_ARMOR_AND_ACCESSORIES.getKey()) {
-            event.getEntries().put(new ItemStack(ProtectItems.ZANITE_MOA_ARMOR.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.getEntries().put(new ItemStack(ProtectItems.LEATHER_MOA_ARMOR.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.getEntries().putAfter(new ItemStack(ProtectItems.LEATHER_MOA_ARMOR.get()), new ItemStack(ProtectItems.IRON_MOA_ARMOR.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.getEntries().putAfter(new ItemStack(ProtectItems.IRON_MOA_ARMOR.get()), new ItemStack(ProtectItems.GOLDEN_MOA_ARMOR.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.getEntries().putAfter(new ItemStack(ProtectItems.GOLDEN_MOA_ARMOR.get()), new ItemStack(ProtectItems.DIAMOND_MOA_ARMOR.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.getEntries().putAfter(new ItemStack(ProtectItems.DIAMOND_MOA_ARMOR.get()), new ItemStack(ProtectItems.ZANITE_MOA_ARMOR.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.getEntries().putAfter(new ItemStack(ProtectItems.ZANITE_MOA_ARMOR.get()), new ItemStack(ProtectItems.GRAVITITE_MOA_ARMOR.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }

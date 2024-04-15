@@ -1,3 +1,7 @@
-// 1.20.1	2024-04-03T23:19:02.3897566	Item Models: aether_protect_your_moa
+// 1.20.1	2024-04-15T11:47:09.3603488	Item Models: aether_protect_your_moa
+762397bcfbb6e0301f680d7b0753046f088ef5ec assets/aether_protect_your_moa/models/item/diamond_moa_armor.json
+5b204b9925fb6673156ebb3194f944d7c5f9251e assets/aether_protect_your_moa/models/item/golden_moa_armor.json
 51a9572434a7b403906b6891f386bcb440d1d213 assets/aether_protect_your_moa/models/item/gravitite_moa_armor.json
+49deb23ec91fda89088e2673cdfeccbd8fedde94 assets/aether_protect_your_moa/models/item/iron_moa_armor.json
+fc9ca89b9f60b9fcc8093de315f381b7130a5627 assets/aether_protect_your_moa/models/item/leather_moa_armor.json
 fa40473aea4860ca1b47a900649c377d00540e3a assets/aether_protect_your_moa/models/item/zanite_moa_armor.json

@@ -1,6 +1,7 @@
 package com.aetherteam.protectyourmoa.client.gui.screen.inventory;
 
 import com.aetherteam.aether.entity.passive.Moa;
+import com.aetherteam.protectyourmoa.ProtectYourMoa;
 import com.aetherteam.protectyourmoa.capability.armor.MoaArmor;
 import com.aetherteam.protectyourmoa.inventory.menu.MoaInventoryMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -10,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu> {
-    private static final ResourceLocation HORSE_INVENTORY_LOCATION = new ResourceLocation("textures/gui/container/horse.png");
+    private static final ResourceLocation HORSE_INVENTORY_LOCATION = new ResourceLocation(ProtectYourMoa.MODID, "textures/gui/container/moa.png");
     /** The EntityHorse whose inventory is currently being accessed. */
     private final Moa moa;
     /** The mouse x-position recorded during the last rendered frame. */

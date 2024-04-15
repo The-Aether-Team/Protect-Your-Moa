@@ -12,6 +12,10 @@ public class ProtectLanguageData extends NitrogenLanguageProvider {
 
     @Override
     protected void addTranslations() {
+        this.addItem(ProtectItems.LEATHER_MOA_ARMOR, "Leather Moa Armor");
+        this.addItem(ProtectItems.IRON_MOA_ARMOR, "Iron Moa Armor");
+        this.addItem(ProtectItems.GOLDEN_MOA_ARMOR, "Golden Moa Armor");
+        this.addItem(ProtectItems.DIAMOND_MOA_ARMOR, "Diamond Moa Armor");
         this.addItem(ProtectItems.ZANITE_MOA_ARMOR, "Zanite Moa Armor");
         this.addItem(ProtectItems.GRAVITITE_MOA_ARMOR, "Gravitite Moa Armor");
 

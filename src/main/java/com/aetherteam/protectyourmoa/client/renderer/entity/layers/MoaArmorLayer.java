@@ -4,6 +4,7 @@ import com.aetherteam.aether.client.renderer.entity.model.MoaModel;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.protectyourmoa.capability.armor.MoaArmor;
 import com.aetherteam.protectyourmoa.client.renderer.entity.ProtectModelLayers;
+import com.aetherteam.protectyourmoa.item.combat.DyeableMoaArmorItem;
 import com.aetherteam.protectyourmoa.item.combat.MoaArmorItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -34,17 +35,14 @@ public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
                 float f = 1.0F;
                 float f1 = 1.0F;
                 float f2 = 1.0F;
-//                if (horsearmoritem instanceof DyeableHorseArmorItem) {
-//                    int i = ((DyeableHorseArmorItem)horsearmoritem).getColor(itemstack);
-//                    f = (float)(i >> 16 & 255) / 255.0F;
-//                    f1 = (float)(i >> 8 & 255) / 255.0F;
-//                    f2 = (float)(i & 255) / 255.0F;
-//                } else {
-//                    f = 1.0F;
-//                    f1 = 1.0F;
-//                    f2 = 1.0F;
-//                }
-
+                if (moaArmor.getArmor().getItem() instanceof DyeableMoaArmorItem dyeableMoaArmorItem) {
+                    int i = dyeableMoaArmorItem.getColor(moaArmor.getArmor());
+                    f = (float)(i >> 16 & 255) / 255.0F;
+                    f1 = (float)(i >> 8 & 255) / 255.0F;
+                    f2 = (float)(i & 255) / 255.0F;
+                    VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(dyeableMoaArmorItem.getOverlayTexture()));
+                    this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                }
                 VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(moaArmorItem.getTexture()));
                 this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
             }

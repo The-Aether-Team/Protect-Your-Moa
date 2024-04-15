@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "aether_protect_your_moa:item/armor/leather_moa_armor",
+    "layer1": "aether_protect_your_moa:item/armor/leather_moa_armor_overlay"
+  }
+}
