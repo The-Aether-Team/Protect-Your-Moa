@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
 
@@ -20,8 +21,9 @@ public abstract class ProtectRecipeProvider extends NitrogenRecipeProvider {
     public void moaArmor(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike result, ItemLike material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result)
                 .define('#', material)
+                .define('L', Tags.Items.LEATHER)
                 .pattern("  #")
-                .pattern("###")
+                .pattern("#L#")
                 .pattern("# #")
                 .unlockedBy(getHasName(result), has(result))
                 .save(finishedRecipeConsumer);
@@ -30,8 +32,9 @@ public abstract class ProtectRecipeProvider extends NitrogenRecipeProvider {
     public void moaArmor(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike result, TagKey<Item> material, String unlockName) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result)
                 .define('#', material)
-                .pattern("#  ")
-                .pattern("###")
+                .define('L', Tags.Items.LEATHER)
+                .pattern("  #")
+                .pattern("#L#")
                 .pattern("# #")
                 .unlockedBy("has_" + unlockName, has(result))
                 .save(finishedRecipeConsumer);

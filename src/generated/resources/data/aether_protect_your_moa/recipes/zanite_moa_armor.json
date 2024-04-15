@@ -4,11 +4,14 @@
   "key": {
     "#": {
       "tag": "aether:gems/zanite"
+    },
+    "L": {
+      "tag": "forge:leather"
     }
   },
   "pattern": [
-    "#  ",
-    "###",
+    "  #",
+    "#L#",
     "# #"
   ],
   "result": {
