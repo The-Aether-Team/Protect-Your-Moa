@@ -16,7 +16,7 @@ public abstract class ProtectItemModelProvider extends NitrogenItemModelProvider
     }
 
     public void dyedMoaArmorItem(Item item, String location) {
-        ItemModelBuilder builder = this.withExistingParent(this.itemName(item), this.mcLoc("item/generated"))
+        this.withExistingParent(this.itemName(item), this.mcLoc("item/generated"))
                 .texture("layer0", this.modLoc("item/" + location + this.itemName(item)))
                 .texture("layer1", this.modLoc("item/" + location + this.itemName(item) + "_overlay"));
     }

@@ -6,13 +6,18 @@ import com.aetherteam.protectyourmoa.capability.armor.MoaArmor;
 import com.aetherteam.protectyourmoa.item.combat.MoaArmorItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.util.LazyOptional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public class EntityHooks {
@@ -92,6 +97,38 @@ public class EntityHooks {
     public static void onUpdate(Entity entity) {
         if (entity instanceof Moa moa) {
             MoaArmor.get(moa).ifPresent(MoaArmor::onUpdate);
+        }
+    }
+
+    public static void onDrops(Entity entity, Collection<ItemEntity> drops) {
+        if (entity instanceof Moa moa) {
+            LazyOptional<MoaArmor> moaArmorLazyOptional = MoaArmor.get(moa);
+            if (moaArmorLazyOptional.isPresent()) {
+                Optional<MoaArmor> moaArmorOptional = moaArmorLazyOptional.resolve();
+                if (moaArmorOptional.isPresent()) {
+                    MoaArmor moaArmor = moaArmorOptional.get();
+                    Container inventory = moaArmor.getInventory();
+                    if (moaArmor.hasChest()) {
+                        if (!moa.level().isClientSide()) {
+                            ItemEntity itemEntity = new ItemEntity(moa.level(), moa.getX(), moa.getY() + (double) 0.0F, moa.getZ(), new ItemStack(Blocks.CHEST));
+                            itemEntity.setDefaultPickUpDelay();
+                            drops.add(itemEntity);
+                        }
+                        moaArmor.setChest(false);
+                    }
+                    if (inventory != null) {
+                        drops.removeIf(itemEntity -> itemEntity.getItem().is(Items.SADDLE));
+                        for (int i = 0; i < inventory.getContainerSize(); ++i) {
+                            ItemStack itemStack = inventory.getItem(i);
+                            if (!itemStack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemStack)) {
+                                ItemEntity itemEntity = new ItemEntity(moa.level(), moa.getX(), moa.getY() + (double) 0.0F, moa.getZ(), itemStack);
+                                itemEntity.setDefaultPickUpDelay();
+                                drops.add(itemEntity);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
