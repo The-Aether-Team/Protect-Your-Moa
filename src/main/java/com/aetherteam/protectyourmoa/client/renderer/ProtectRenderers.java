@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ProtectRenderers {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(ProtectModelLayers.MOA_ARMOR, () -> MoaModel.createBodyLayer(new CubeDeformation(0.15F)));
+        event.registerLayerDefinition(ProtectModelLayers.MOA_ARMOR, () -> MoaModel.createBodyLayer(new CubeDeformation(0.25F)));
         event.registerLayerDefinition(ProtectModelLayers.MOA_CHEST, MoaChestModel::createBodyLayer);
     }
 
