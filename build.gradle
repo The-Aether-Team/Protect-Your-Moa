@@ -85,6 +85,11 @@ dependencies {
     implementation fg.deobf("com.aetherteam.aether:aether:${project.aether_version}")
     implementation fg.deobf("com.aetherteam.nitrogen:nitrogen_internals:${project.nitrogen_version}")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}+${project.mc_version}")
+
+    jarJar("com.aetherteam.nitrogen:nitrogen_internals:${project.nitrogen_version}") {
+        jarJar.ranged(it, "[${project.nitrogen_version},)")
+        jarJar.pin(it, "${project.nitrogen_version}")
+    }
 }
 
 repositories {
