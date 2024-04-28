@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class EntityHooks {
     public static Optional<InteractionResult> interactionOpenMoaInventory(Entity target, Player player) {
-        if (target instanceof Moa moa && moa.isPlayerGrown() && player.isShiftKeyDown() && player.getMainHandItem().isEmpty()) {
+        if (target instanceof Moa moa && moa.isPlayerGrown() && !moa.isBaby() && player.isShiftKeyDown() && player.getMainHandItem().isEmpty()) {
             LazyOptional<MoaArmor> moaArmorLazyOptional = MoaArmor.get(moa);
             if (moaArmorLazyOptional.isPresent()) {
                 Optional<MoaArmor> moaArmorOptional = moaArmorLazyOptional.resolve();
@@ -39,7 +39,7 @@ public class EntityHooks {
     }
 
     public static Optional<InteractionResult> equipMoaArmor(Entity target, Player player, ItemStack stack) {
-        if (target instanceof Moa moa && moa.isPlayerGrown() && !moa.isVehicle()) {
+        if (target instanceof Moa moa && moa.isPlayerGrown() && !moa.isBaby() && !moa.isVehicle()) {
             LazyOptional<MoaArmor> moaArmorLazyOptional = MoaArmor.get(moa);
             if (moaArmorLazyOptional.isPresent()) {
                 Optional<MoaArmor> moaArmorOptional = moaArmorLazyOptional.resolve();
@@ -63,7 +63,7 @@ public class EntityHooks {
     }
 
     public static Optional<InteractionResult> equipMoaChest(Entity target, Player player, ItemStack stack) {
-        if (target instanceof Moa moa && moa.isPlayerGrown() && !moa.isVehicle()) {
+        if (target instanceof Moa moa && moa.isPlayerGrown() && !moa.isBaby() && !moa.isVehicle()) {
             LazyOptional<MoaArmor> moaArmorLazyOptional = MoaArmor.get(moa);
             if (moaArmorLazyOptional.isPresent()) {
                 Optional<MoaArmor> moaArmorOptional = moaArmorLazyOptional.resolve();
