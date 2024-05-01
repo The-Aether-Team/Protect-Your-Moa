@@ -6,10 +6,12 @@
   "refmap": "aether_protect_your_moa.refmap.json",
   "mixins": [
     "client.accessor.LayerDefinitionAccessor",
+    "common.MoaMixin",
     "common.MountableAnimalMixin",
     "common.ServerGamePacketListenerImplMixin"
   ],
   "client": [
+    "client.AetherOverlaysMixin",
     "client.MultiPlayerGameModeMixin"
   ],
   "injectors": {
