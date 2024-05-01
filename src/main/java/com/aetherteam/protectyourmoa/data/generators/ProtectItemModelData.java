@@ -1,7 +1,5 @@
 package com.aetherteam.protectyourmoa.data.generators;
 
-import com.aetherteam.nitrogen.data.providers.NitrogenItemModelProvider;
-import com.aetherteam.protectyourmoa.ProtectYourMoa;
 import com.aetherteam.protectyourmoa.data.providers.ProtectItemModelProvider;
 import com.aetherteam.protectyourmoa.item.ProtectItems;
 import net.minecraft.data.PackOutput;

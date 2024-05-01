@@ -3,11 +3,7 @@ package com.aetherteam.protectyourmoa.data.providers;
 import com.aetherteam.nitrogen.data.providers.NitrogenItemModelProvider;
 import com.aetherteam.protectyourmoa.ProtectYourMoa;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.armortrim.TrimMaterial;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public abstract class ProtectItemModelProvider extends NitrogenItemModelProvider {

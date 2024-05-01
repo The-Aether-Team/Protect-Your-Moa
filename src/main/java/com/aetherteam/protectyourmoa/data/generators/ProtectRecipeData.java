@@ -5,7 +5,6 @@ import com.aetherteam.protectyourmoa.data.providers.ProtectRecipeProvider;
 import com.aetherteam.protectyourmoa.item.ProtectItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;

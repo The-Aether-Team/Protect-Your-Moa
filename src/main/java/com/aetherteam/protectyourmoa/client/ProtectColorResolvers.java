@@ -1,10 +1,7 @@
 package com.aetherteam.protectyourmoa.client;
 
-import com.aetherteam.aether.item.AetherItems;
-import com.aetherteam.aether.item.miscellaneous.MoaEggItem;
 import com.aetherteam.protectyourmoa.ProtectYourMoa;
 import com.aetherteam.protectyourmoa.item.ProtectItems;
-import com.aetherteam.protectyourmoa.item.combat.DyeableMoaArmorItem;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
