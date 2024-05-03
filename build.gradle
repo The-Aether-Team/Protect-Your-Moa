@@ -14,7 +14,7 @@ plugins {
 }
 
 version = "${mc_version}-${mod_version}-neoforge"
-group = 'com.aetherteam.moaarmor' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'com.aetherteam.protect_your_moa' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 
 base {
     archivesName = mod_id

@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.aetherteam.protectyourmoa.mixin.mixins",
+  "package": "com.aetherteam.protect_your_moa.mixin.mixins",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_17",
   "refmap": "aether_protect_your_moa.refmap.json",
