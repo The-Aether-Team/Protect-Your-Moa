@@ -1,7 +1,5 @@
 package com.aetherteam.protect_your_moa.mixin.mixins.common;
 
-import com.aetherteam.aether.api.AetherMoaTypes;
-import com.aetherteam.aether.api.registers.MoaType;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
 import com.aetherteam.protect_your_moa.item.ProtectItems;

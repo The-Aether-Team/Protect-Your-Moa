@@ -1,7 +1,5 @@
 package com.aetherteam.protect_your_moa.client.renderer;
 
-import com.aetherteam.aether.api.AetherMoaTypes;
-import com.aetherteam.aether.api.registers.MoaType;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
@@ -38,7 +36,7 @@ public class ProtectOverlays {
 
     private static void renderMoaJumps(GuiGraphics guiGraphics, Window window, LocalPlayer player) {
         if (player.getVehicle() instanceof Moa moa) {
-            int jumps = moa.getMaxJumps()-3;
+            int jumps = moa.getMaxJumps() - 3;
             LazyOptional<MoaArmor> moaArmorLazyOptional = MoaArmor.get(moa);
             if (moaArmorLazyOptional.isPresent()) {
                 Optional<MoaArmor> moaArmorOptional = moaArmorLazyOptional.resolve();
