@@ -16,6 +16,9 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * [CODE COPY] - {@link net.minecraft.client.renderer.entity.layers.HorseArmorLayer}.
+ */
 public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
     private final MoaModel model;
 

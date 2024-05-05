@@ -1,0 +1,8 @@
+{
+  "entity.moa.chest": {
+    "sounds": [
+      "mob/chicken/plop"
+    ],
+    "subtitle": "subtitles.aether_protect_your_moa.entity.moa.chest"
+  }
+}

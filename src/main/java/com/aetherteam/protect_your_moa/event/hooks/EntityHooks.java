@@ -3,6 +3,7 @@ package com.aetherteam.protect_your_moa.event.hooks;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.capability.INBTSynchable;
 import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
+import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
 import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -72,7 +73,7 @@ public class EntityHooks {
                     if (!stack.isEmpty() && stack.is(Items.CHEST) && !player.isSecondaryUseActive() && !moaArmor.hasChest()) {
                         if (!player.level().isClientSide()) {
                             moaArmor.setSynched(INBTSynchable.Direction.CLIENT, "setChest", true);
-                            moa.playSound(SoundEvents.DONKEY_CHEST, 1.0F, (moa.getRandom().nextFloat() - moa.getRandom().nextFloat()) * 0.2F + 1.0F);
+                            moa.playSound(ProtectSoundEvents.ENTITY_MOA_CHEST.get(), 1.0F, (moa.getRandom().nextFloat() - moa.getRandom().nextFloat()) * 0.2F + 1.0F);
                             if (!player.getAbilities().instabuild) {
                                 stack.shrink(1);
                             }

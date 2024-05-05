@@ -1,5 +1,6 @@
 package com.aetherteam.protect_your_moa;
 
+import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
 import com.aetherteam.protect_your_moa.data.ProtectData;
 import com.aetherteam.protect_your_moa.item.ProtectItems;
 import com.aetherteam.protect_your_moa.network.ProtectPacketHandler;
@@ -22,7 +23,8 @@ public class ProtectYourMoa {
         modEventBus.addListener(this::commonSetup);
 
         DeferredRegister<?>[] registers = {
-                ProtectItems.ITEMS
+                ProtectItems.ITEMS,
+                ProtectSoundEvents.SOUNDS
         };
 
         for (DeferredRegister<?> register : registers) {

@@ -19,6 +19,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.MinecraftForge;
@@ -57,6 +59,11 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         return this.moa;
     }
 
+    /**
+     * [CODE COPY] - {@link AbstractHorse#addAdditionalSaveData(CompoundTag)}.<br><br>
+     * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#addAdditionalSaveData(CompoundTag)}.<br><br>
+     * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#addAdditionalSaveData(CompoundTag)}.
+     */
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
@@ -83,6 +90,11 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         return tag;
     }
 
+    /**
+     * [CODE COPY] - {@link AbstractHorse#readAdditionalSaveData(CompoundTag)}.<br><br>
+     * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#readAdditionalSaveData(CompoundTag)}.<br><br>
+     * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#readAdditionalSaveData(CompoundTag)}.
+     */
     @Override
     public void deserializeNBT(CompoundTag tag) {
         if (tag.contains("SaddleItem", 10)) {
@@ -133,6 +145,10 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         }
     }
 
+    /**
+     * [CODE COPY] - {@link AbstractHorse#containerChanged(Container)}.<br><br>
+     * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#containerChanged(Container)}.
+     */
     @Override
     public void containerChanged(Container container) {
         ItemStack oldArmorStack = this.getArmor();
@@ -149,6 +165,10 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         }
     }
 
+    /**
+     * [CODE COPY] - {@link AbstractHorse#updateContainerEquipment()}.<br><br>
+     * [CODE COPY] - {@link Horse#updateContainerEquipment()}.
+     */
     private void updateContainerEquipment() {
         if (!this.getMoa().level().isClientSide()) {
             this.getMoa().setSaddled(!this.getInventory().getItem(0).isEmpty());
@@ -157,6 +177,9 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         }
     }
 
+    /**
+     * [CODE COPY] - {@link Horse#setArmorEquipment(ItemStack)}.
+     */
     private void setArmorEquipment(ItemStack stack) {
         this.setArmor(stack);
         if (!this.getMoa().level().isClientSide()) {
@@ -173,6 +196,9 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         }
     }
 
+    /**
+     * [CODE COPY] - {@link AbstractHorse#createInventory()}.
+     */
     @Override
     public void createInventory() {
         SimpleContainer simplecontainer = this.inventory;
@@ -190,10 +216,11 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         }
 
         this.inventory.addListener(this);
-//        this.updateContainerEquipment();
-//        this.itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this.inventory));
     }
 
+    /**
+     * [CODE COPY] - {@link ServerPlayer#openHorseInventory(AbstractHorse, Container)}.
+     */
     @Override
     public void openInventory(ServerPlayer serverPlayer, Moa moa) {
         if (serverPlayer.containerMenu != serverPlayer.inventoryMenu) {

@@ -11,5 +11,6 @@
   "lore.item.aether_protect_your_moa.iron_moa_armor": "A piece of iron armor for your Moa to wear, offering some amount of protection.",
   "lore.item.aether_protect_your_moa.leather_moa_armor": "A dyeable piece of leather armor for your Moa to wear, offering a small amount of protection.",
   "lore.item.aether_protect_your_moa.zanite_moa_armor": "A piece of zanite armor for your Moa to wear, offering some amount of protection.",
-  "pack.aether_protect_your_moa.mod.description": "The Aether: Protect Your Moa Resources"
+  "pack.aether_protect_your_moa.mod.description": "The Aether: Protect Your Moa Resources",
+  "subtitles.aether_protect_your_moa.entity.moa.chest": "Moa Chest equips"
 }

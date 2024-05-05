@@ -11,6 +11,9 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+/**
+ * [CODE COPY] - {@link net.minecraft.world.inventory.HorseInventoryMenu}.
+ */
 public class MoaInventoryMenu extends AbstractContainerMenu {
     private final Container moaContainer;
     private final Moa moa;

@@ -10,8 +10,11 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+/**
+ * [CODE COPY] - {@link net.minecraft.client.gui.screens.inventory.HorseInventoryScreen}.
+ */
 public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu> {
-    private static final ResourceLocation HORSE_INVENTORY_LOCATION = new ResourceLocation(ProtectYourMoa.MODID, "textures/gui/container/moa.png");
+    private static final ResourceLocation MOA_INVENTORY_LOCATION = new ResourceLocation(ProtectYourMoa.MODID, "textures/gui/container/moa.png");
     /** The EntityHorse whose inventory is currently being accessed. */
     private final Moa moa;
     /** The mouse x-position recorded during the last rendered frame. */
@@ -27,18 +30,18 @@ public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
-        guiGraphics.blit(HORSE_INVENTORY_LOCATION, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        guiGraphics.blit(MOA_INVENTORY_LOCATION, i, j, 0, 0, this.imageWidth, this.imageHeight);
         MoaArmor.get(this.moa).ifPresent(moaArmor -> {
             if (moaArmor.hasChest()) {
-                guiGraphics.blit(HORSE_INVENTORY_LOCATION, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
+                guiGraphics.blit(MOA_INVENTORY_LOCATION, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
             }
         });
 
         if (this.moa.isSaddleable()) {
-            guiGraphics.blit(HORSE_INVENTORY_LOCATION, i + 7, j + 35 - 18, 18, this.imageHeight + 54, 18, 18);
+            guiGraphics.blit(MOA_INVENTORY_LOCATION, i + 7, j + 35 - 18, 18, this.imageHeight + 54, 18, 18);
         }
 
-        guiGraphics.blit(HORSE_INVENTORY_LOCATION, i + 7, j + 35, 0, this.imageHeight + 54, 18, 18);
+        guiGraphics.blit(MOA_INVENTORY_LOCATION, i + 7, j + 35, 0, this.imageHeight + 54, 18, 18);
 
         InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, i + 51, j + 63, 17, (float)(i + 51) - this.xMouse, (float)(j + 75 - 47) - this.yMouse, this.moa);
     }

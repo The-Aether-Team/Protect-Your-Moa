@@ -3,6 +3,7 @@ package com.aetherteam.protect_your_moa.data;
 import com.aetherteam.protect_your_moa.data.generators.ProtectItemModelData;
 import com.aetherteam.protect_your_moa.data.generators.ProtectLanguageData;
 import com.aetherteam.protect_your_moa.data.generators.ProtectRecipeData;
+import com.aetherteam.protect_your_moa.data.generators.ProtectSoundData;
 import net.minecraft.SharedConstants;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -24,6 +25,7 @@ public class ProtectData {
         // Client Data
         generator.addProvider(event.includeClient(), new ProtectItemModelData(packOutput, fileHelper));
         generator.addProvider(event.includeClient(), new ProtectLanguageData(packOutput));
+        generator.addProvider(event.includeClient(), new ProtectSoundData(packOutput, fileHelper));
 
         // Server Data
         generator.addProvider(event.includeServer(), new ProtectRecipeData(packOutput));

@@ -34,6 +34,9 @@ public class ProtectOverlays {
         });
     }
 
+    /**
+     * [CODE COPY] - {@link com.aetherteam.aether.client.renderer.AetherOverlays#renderMoaJumps(GuiGraphics, Window, LocalPlayer)}.
+     */
     private static void renderMoaJumps(GuiGraphics guiGraphics, Window window, LocalPlayer player) {
         if (player.getVehicle() instanceof Moa moa) {
             int jumps = moa.getMaxJumps() - 3;

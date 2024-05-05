@@ -19,6 +19,8 @@ public class ProtectLanguageData extends AetherLanguageProvider {
         this.addItem(ProtectItems.ZANITE_MOA_ARMOR, "Zanite Moa Armor");
         this.addItem(ProtectItems.GRAVITITE_MOA_ARMOR, "Gravitite Moa Armor");
 
+        this.addSubtitle("entity", "moa.chest", "Moa Chest equips");
+
         this.addLore(ProtectItems.LEATHER_MOA_ARMOR, "A dyeable piece of leather armor for your Moa to wear, offering a small amount of protection.");
         this.addLore(ProtectItems.IRON_MOA_ARMOR, "A piece of iron armor for your Moa to wear, offering some amount of protection.");
         this.addLore(ProtectItems.GOLDEN_MOA_ARMOR, "A piece of golden armor for your Moa to wear, offering a decent amount of protection.");
