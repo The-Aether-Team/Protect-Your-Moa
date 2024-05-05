@@ -38,8 +38,7 @@ public class ProtectOverlays {
 
     private static void renderMoaJumps(GuiGraphics guiGraphics, Window window, LocalPlayer player) {
         if (player.getVehicle() instanceof Moa moa) {
-            MoaType moaType = moa.getMoaType();
-            int jumps = moaType != null ? moaType.getMaxJumps() : AetherMoaTypes.BLUE.get().getMaxJumps();
+            int jumps = moa.getMaxJumps()-3;
             LazyOptional<MoaArmor> moaArmorLazyOptional = MoaArmor.get(moa);
             if (moaArmorLazyOptional.isPresent()) {
                 Optional<MoaArmor> moaArmorOptional = moaArmorLazyOptional.resolve();
