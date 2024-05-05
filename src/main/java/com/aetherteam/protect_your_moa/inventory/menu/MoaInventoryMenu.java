@@ -21,25 +21,46 @@ public class MoaInventoryMenu extends AbstractContainerMenu {
         this.moa = moa;
         container.startOpen(playerInventory.player);
         this.addSlot(new Slot(container, 0, 8, 18) {
+            @Override
             public boolean mayPlace(ItemStack itemStack) {
                 return itemStack.is(Items.SADDLE) && !this.hasItem() && moa.isSaddleable();
             }
 
+            @Override
             public boolean isActive() {
                 return moa.isSaddleable();
             }
         });
         this.addSlot(new Slot(container, 1, 8, 36) {
+            @Override
             public boolean mayPlace(ItemStack itemStack) {
                 return itemStack.getItem() instanceof MoaArmorItem;
             }
 
+            @Override
             public boolean isActive() {
                 return moa.isSaddleable();
             }
 
+            @Override
             public int getMaxStackSize() {
                 return 1;
+            }
+
+            @Override
+            public void setByPlayer(ItemStack stack) {
+                if (!stack.isEmpty() && stack.getItem() instanceof MoaArmorItem moaArmorItem) {
+                    moaArmorItem.onEquip(moa, stack);
+                }
+                super.setByPlayer(stack);
+            }
+
+            @Override
+            public void onTake(Player player, ItemStack stack) {
+                if (stack.getItem() instanceof MoaArmorItem moaArmorItem) {
+                    moaArmorItem.onUnequip(moa, stack);
+                }
+                super.onTake(player, stack);
             }
         });
         if (this.hasChest(moa)) {
