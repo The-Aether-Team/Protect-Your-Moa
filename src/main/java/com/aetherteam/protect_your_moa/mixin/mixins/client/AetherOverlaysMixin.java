@@ -6,7 +6,7 @@ import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
 import com.aetherteam.protect_your_moa.item.ProtectItems;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.Window;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraftforge.common.util.LazyOptional;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,8 +18,8 @@ import java.util.Optional;
 
 @Mixin(AetherOverlays.class)
 public class AetherOverlaysMixin {
-    @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;getGuiScaledWidth()I", shift = At.Shift.BEFORE), method = "renderMoaJumps(Lnet/minecraft/client/gui/GuiGraphics;Lcom/mojang/blaze3d/platform/Window;Lnet/minecraft/client/player/LocalPlayer;)V", cancellable = true)
-    private static void renderMoaJumps(GuiGraphics guiGraphics, Window window, LocalPlayer player, CallbackInfo ci, @Local Moa moa, @Local(ordinal = 0) int jumpCount) {
+    @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;getGuiScaledWidth()I", shift = At.Shift.BEFORE), method = "renderMoaJumps(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/platform/Window;Lnet/minecraft/client/player/LocalPlayer;)V", cancellable = true)
+    private static void renderMoaJumps(PoseStack poseStack, Window window, LocalPlayer player, CallbackInfo ci, @Local Moa moa, @Local(ordinal = 0) int jumpCount) {
         int jumps = moa.getMaxJumps() - 3;
         LazyOptional<MoaArmor> moaArmorLazyOptional = MoaArmor.get(moa);
         if (moaArmorLazyOptional.isPresent()) {

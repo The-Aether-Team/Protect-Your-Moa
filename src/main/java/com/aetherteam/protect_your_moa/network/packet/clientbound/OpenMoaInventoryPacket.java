@@ -26,7 +26,7 @@ public record OpenMoaInventoryPacket(int entityId, int containerSize, int contai
     @Override
     public void execute(Player player) {
         if (Minecraft.getInstance().player != null && Minecraft.getInstance().level != null) {
-            Entity entity = Minecraft.getInstance().player.level().getEntity(this.entityId());
+            Entity entity = Minecraft.getInstance().player.getLevel().getEntity(this.entityId());
             if (entity instanceof Moa moa) {
                 MoaArmorClient.setToMoaInventoryScreen(Minecraft.getInstance().player, moa, this.containerSize(), this.containerId());
             }

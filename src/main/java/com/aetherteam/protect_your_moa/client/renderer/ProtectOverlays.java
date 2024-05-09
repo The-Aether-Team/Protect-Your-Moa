@@ -5,9 +5,12 @@ import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
 import com.aetherteam.protect_your_moa.item.ProtectItems;
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -24,12 +27,12 @@ public class ProtectOverlays {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void registerOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("moa_jumps_gravitite", (gui, graphics, partialTicks, screenWidth, screenHeight) -> {
+        event.registerAboveAll("moa_jumps_gravitite", (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
             Minecraft minecraft = Minecraft.getInstance();
             Window window = minecraft.getWindow();
             LocalPlayer player = minecraft.player;
             if (player != null) {
-                renderMoaJumps(graphics, window, player);
+                renderMoaJumps(poseStack, window, player);
             }
         });
     }
@@ -37,7 +40,7 @@ public class ProtectOverlays {
     /**
      * [CODE COPY] - {@link com.aetherteam.aether.client.renderer.AetherOverlays#renderMoaJumps(GuiGraphics, Window, LocalPlayer)}.
      */
-    private static void renderMoaJumps(GuiGraphics guiGraphics, Window window, LocalPlayer player) {
+    private static void renderMoaJumps(PoseStack poseStack, Window window, LocalPlayer player) {
         if (player.getVehicle() instanceof Moa moa) {
             int jumps = moa.getMaxJumps() - 3;
             LazyOptional<MoaArmor> moaArmorLazyOptional = MoaArmor.get(moa);
@@ -49,10 +52,12 @@ public class ProtectOverlays {
                         for (int jumpCount = jumps; jumpCount < moa.getMaxJumps(); jumpCount++) {
                             int xPos = ((window.getGuiScaledWidth() / 2) + (jumpCount * 8)) - (moa.getMaxJumps() * 8) / 2;
                             int yPos = 18;
+                            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                            RenderSystem.setShaderTexture(0, TEXTURE_JUMPS);
                             if (jumpCount < moa.getRemainingJumps()) {
-                                guiGraphics.blit(TEXTURE_JUMPS, xPos, yPos, 0, 0, 9, 11, 256, 256);
+                                GuiComponent.blit(poseStack, xPos, yPos, 0, 0, 9, 11, 256, 256);
                             } else {
-                                guiGraphics.blit(TEXTURE_JUMPS, xPos, yPos, 10, 0, 9, 11, 256, 256);
+                                GuiComponent.blit(poseStack, xPos, yPos, 10, 0, 9, 11, 256, 256);
                             }
                         }
                     }

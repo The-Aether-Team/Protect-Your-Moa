@@ -16,7 +16,7 @@ public class MountableAnimalMixin {
     private void equipSaddle(SoundSource soundCategory, CallbackInfo ci) {
         MountableAnimal mountableAnimal = (MountableAnimal) (Object) this;
         if (mountableAnimal instanceof Moa moa) {
-            if (!moa.level().isClientSide()) {
+            if (!moa.getLevel().isClientSide()) {
                 MoaArmor.get(moa).ifPresent((moaArmor) -> moaArmor.setSynched(INBTSynchable.Direction.CLIENT, "equipSaddle", null));
             }
         }

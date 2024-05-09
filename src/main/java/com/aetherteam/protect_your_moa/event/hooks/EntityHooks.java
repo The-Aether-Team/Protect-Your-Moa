@@ -34,7 +34,7 @@ public class EntityHooks {
                     }
                 }
             }
-            return Optional.of(InteractionResult.sidedSuccess(player.level().isClientSide()));
+            return Optional.of(InteractionResult.sidedSuccess(player.getLevel().isClientSide()));
         }
         return Optional.empty();
     }
@@ -47,7 +47,7 @@ public class EntityHooks {
                 if (moaArmorOptional.isPresent()) {
                     MoaArmor moaArmor = moaArmorOptional.get();
                     if (!stack.isEmpty() && stack.getItem() instanceof MoaArmorItem && moaArmor.isArmor(stack) && !player.isSecondaryUseActive() && !moaArmor.isWearingArmor()) {
-                        if (!player.level().isClientSide()) {
+                        if (!player.getLevel().isClientSide()) {
                             moaArmor.setSynched(INBTSynchable.Direction.CLIENT, "equipArmor", stack);
                             if (!player.getAbilities().instabuild) {
                                 stack.shrink(1);
@@ -71,7 +71,7 @@ public class EntityHooks {
                 if (moaArmorOptional.isPresent()) {
                     MoaArmor moaArmor = moaArmorOptional.get();
                     if (!stack.isEmpty() && stack.is(Items.CHEST) && !player.isSecondaryUseActive() && !moaArmor.hasChest()) {
-                        if (!player.level().isClientSide()) {
+                        if (!player.getLevel().isClientSide()) {
                             moaArmor.setSynched(INBTSynchable.Direction.CLIENT, "setChest", true);
                             moa.playSound(ProtectSoundEvents.ENTITY_MOA_CHEST.get(), 1.0F, (moa.getRandom().nextFloat() - moa.getRandom().nextFloat()) * 0.2F + 1.0F);
                             if (!player.getAbilities().instabuild) {
@@ -110,8 +110,8 @@ public class EntityHooks {
                     MoaArmor moaArmor = moaArmorOptional.get();
                     Container inventory = moaArmor.getInventory();
                     if (moaArmor.hasChest()) {
-                        if (!moa.level().isClientSide()) {
-                            ItemEntity itemEntity = new ItemEntity(moa.level(), moa.getX(), moa.getY() + (double) 0.0F, moa.getZ(), new ItemStack(Blocks.CHEST));
+                        if (!moa.getLevel().isClientSide()) {
+                            ItemEntity itemEntity = new ItemEntity(moa.getLevel(), moa.getX(), moa.getY() + (double) 0.0F, moa.getZ(), new ItemStack(Blocks.CHEST));
                             itemEntity.setDefaultPickUpDelay();
                             drops.add(itemEntity);
                         }
@@ -122,7 +122,7 @@ public class EntityHooks {
                         for (int i = 0; i < inventory.getContainerSize(); ++i) {
                             ItemStack itemStack = inventory.getItem(i);
                             if (!itemStack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemStack)) {
-                                ItemEntity itemEntity = new ItemEntity(moa.level(), moa.getX(), moa.getY() + (double) 0.0F, moa.getZ(), itemStack);
+                                ItemEntity itemEntity = new ItemEntity(moa.getLevel(), moa.getX(), moa.getY() + (double) 0.0F, moa.getZ(), itemStack);
                                 itemEntity.setDefaultPickUpDelay();
                                 drops.add(itemEntity);
                             }

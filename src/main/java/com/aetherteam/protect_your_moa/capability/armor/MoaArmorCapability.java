@@ -126,7 +126,7 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
 
     @Override
     public void onJoinLevel() {
-        if (this.getMoa().level().isClientSide()) {
+        if (this.getMoa().getLevel().isClientSide()) {
             this.setSynched(Direction.SERVER, "setShouldSyncChest", true);
         }
     }
@@ -137,7 +137,7 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
     }
 
     private void syncChest() {
-        if (!this.getMoa().level().isClientSide()) {
+        if (!this.getMoa().getLevel().isClientSide()) {
             if (this.shouldSyncChest()) {
                 this.setSynched(Direction.CLIENT, "setChest", this.hasChest());
                 this.setShouldSyncChest(false);
@@ -170,7 +170,7 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
      * [CODE COPY] - {@link Horse#updateContainerEquipment()}.
      */
     private void updateContainerEquipment() {
-        if (!this.getMoa().level().isClientSide()) {
+        if (!this.getMoa().getLevel().isClientSide()) {
             this.getMoa().setSaddled(!this.getInventory().getItem(0).isEmpty());
             this.setArmorEquipment(this.inventory.getItem(1));
             this.getMoa().setDropChance(EquipmentSlot.CHEST, 0.0F);
@@ -182,7 +182,7 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
      */
     private void setArmorEquipment(ItemStack stack) {
         this.setArmor(stack);
-        if (!this.getMoa().level().isClientSide()) {
+        if (!this.getMoa().getLevel().isClientSide()) {
             AttributeInstance armorAttribute = this.getMoa().getAttribute(Attributes.ARMOR);
             if (armorAttribute != null) {
                 armorAttribute.removeModifier(ARMOR_MODIFIER_UUID);
