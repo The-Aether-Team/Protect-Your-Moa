@@ -30,6 +30,5 @@
     "recipes": [
       "aether_protect_your_moa:zanite_moa_armor"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

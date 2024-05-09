@@ -3,6 +3,7 @@
     "description": {
       "translate": "pack.aether_protect_your_moa.mod.description"
     },
-    "pack_format": 15
+    "forge:server_data_pack_format": 12,
+    "pack_format": 13
   }
 }
