@@ -1,7 +1,7 @@
 package com.aetherteam.protect_your_moa;
 
 import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
-import com.aetherteam.protect_your_moa.data.ProtectData;
+//import com.aetherteam.protect_your_moa.data.ProtectData;
 import com.aetherteam.protect_your_moa.item.ProtectItems;
 import com.aetherteam.protect_your_moa.network.ProtectPacketHandler;
 import com.mojang.logging.LogUtils;
@@ -19,7 +19,7 @@ public class ProtectYourMoa {
 
     public ProtectYourMoa() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(ProtectData::dataSetup);
+//        modEventBus.addListener(ProtectData::dataSetup);
         modEventBus.addListener(this::commonSetup);
 
         DeferredRegister<?>[] registers = {

@@ -1,12 +1,13 @@
 package com.aetherteam.protect_your_moa.item.combat;
 
 import com.aetherteam.aether.entity.passive.Moa;
+import com.aetherteam.aether.item.AetherCreativeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class GravititeMoaArmorItem extends MoaArmorItem {
     public GravititeMoaArmorItem() {
-        super(11, "gravitite", new Item.Properties().stacksTo(1));
+        super(11, "gravitite", new Item.Properties().stacksTo(1).tab(AetherCreativeTabs.AETHER_ARMOR_AND_ACCESSORIES));
     }
 
     @Override

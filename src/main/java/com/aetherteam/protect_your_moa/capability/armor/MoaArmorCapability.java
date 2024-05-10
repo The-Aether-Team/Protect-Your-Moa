@@ -1,5 +1,6 @@
 package com.aetherteam.protect_your_moa.capability.armor;
 
+import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.network.BasePacket;
 import com.aetherteam.nitrogen.network.PacketRelay;
@@ -156,7 +157,7 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
         boolean oldSaddled = this.isSaddled();
         this.updateContainerEquipment();
         if (this.getMoa().tickCount > 20 && !oldSaddled && this.isSaddled()) {
-            this.getMoa().playSound(this.getMoa().getSaddleSoundEvent(), 0.5F, 1.0F);
+            this.getMoa().playSound(AetherSoundEvents.ENTITY_MOA_SADDLE.get(), 0.5F, 1.0F);
         }
 
         ItemStack newArmorStack = this.getArmor();
@@ -245,7 +246,7 @@ public class MoaArmorCapability implements MoaArmor, ContainerListener {
 
     @Override
     public void equipArmor(ItemStack armor) {
-        this.getInventory().setItem(1, armor.copyWithCount(1));
+        this.getInventory().setItem(1, armor.copy());
     }
 
     @Override

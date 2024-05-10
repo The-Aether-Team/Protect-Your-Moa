@@ -51,11 +51,11 @@ public class MoaInventoryMenu extends AbstractContainerMenu {
             }
 
             @Override
-            public void setByPlayer(ItemStack stack) {
-                if (!stack.isEmpty() && stack.getItem() instanceof MoaArmorItem moaArmorItem) {
+            public void set(ItemStack stack) {
+                if (this.getItem().isEmpty() && !stack.isEmpty() && stack.getItem() instanceof MoaArmorItem moaArmorItem) {
                     moaArmorItem.onEquip(moa, stack);
                 }
-                super.setByPlayer(stack);
+                super.set(stack);
             }
 
             @Override
@@ -130,7 +130,7 @@ public class MoaInventoryMenu extends AbstractContainerMenu {
             }
 
             if (itemStack1.isEmpty()) {
-                slot.setByPlayer(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }

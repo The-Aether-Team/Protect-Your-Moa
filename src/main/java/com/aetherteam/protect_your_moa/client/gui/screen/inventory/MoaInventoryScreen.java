@@ -34,20 +34,20 @@ public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu
         RenderSystem.setShaderTexture(0, MOA_INVENTORY_LOCATION);
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
-        GuiComponent.blit(poseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        this.blit(poseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
         MoaArmor.get(this.moa).ifPresent(moaArmor -> {
             if (moaArmor.hasChest()) {
-                GuiComponent.blit(poseStack, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
+                this.blit(poseStack, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
             }
         });
 
         if (this.moa.isSaddleable()) {
-            GuiComponent.blit(poseStack, i + 7, j + 35 - 18, 18, this.imageHeight + 54, 18, 18);
+            this.blit(poseStack, i + 7, j + 35 - 18, 18, this.imageHeight + 54, 18, 18);
         }
 
-        GuiComponent.blit(poseStack, i + 7, j + 35, 0, this.imageHeight + 54, 18, 18);
+        this.blit(poseStack, i + 7, j + 35, 0, this.imageHeight + 54, 18, 18);
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(poseStack, i + 51, j + 63, 17, (float)(i + 51) - this.xMouse, (float)(j + 75 - 47) - this.yMouse, this.moa);
+        InventoryScreen.renderEntityInInventory(i + 51, j + 63, 17, (float)(i + 51) - this.xMouse, (float)(j + 75 - 47) - this.yMouse, this.moa);
     }
 
     /**
