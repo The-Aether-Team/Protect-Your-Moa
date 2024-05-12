@@ -1,21 +1,31 @@
 package com.aetherteam.protect_your_moa.network.packet;
 
-import com.aetherteam.aether.entity.passive.Moa;
-import com.aetherteam.nitrogen.capability.INBTSynchable;
+import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.nitrogen.network.packet.SyncEntityPacket;
-import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
+import com.aetherteam.protect_your_moa.ProtectYourMoa;
+import com.aetherteam.protect_your_moa.attachment.MoaArmorAttachment;
+import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
-import net.minecraftforge.common.util.LazyOptional;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import oshi.util.tuples.Quartet;
 
-public class MoaArmorSyncPacket extends SyncEntityPacket<MoaArmor> {
+import java.util.function.Supplier;
+
+public class MoaArmorSyncPacket extends SyncEntityPacket<MoaArmorAttachment> {
+    public static final ResourceLocation ID = new ResourceLocation(ProtectYourMoa.MODID, "sync_moa_armor_attachment");
+
     public MoaArmorSyncPacket(Quartet<Integer, String, INBTSynchable.Type, Object> values) {
         super(values);
     }
 
-    public MoaArmorSyncPacket(int playerID, String key, INBTSynchable.Type type, Object value) {
-        super(playerID, key, type, value);
+    public MoaArmorSyncPacket(int entityID, String key, INBTSynchable.Type type, Object value) {
+        super(entityID, key, type, value);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
     public static MoaArmorSyncPacket decode(FriendlyByteBuf buf) {
@@ -23,7 +33,7 @@ public class MoaArmorSyncPacket extends SyncEntityPacket<MoaArmor> {
     }
 
     @Override
-    public LazyOptional<MoaArmor> getCapability(Entity entity) {
-        return MoaArmor.get((Moa) entity);
+    public Supplier<AttachmentType<MoaArmorAttachment>> getAttachment() {
+        return ProtectDataAttachments.MOA_ARMOR;
     }
 }

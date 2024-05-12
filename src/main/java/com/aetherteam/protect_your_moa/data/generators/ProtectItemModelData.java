@@ -3,7 +3,7 @@ package com.aetherteam.protect_your_moa.data.generators;
 import com.aetherteam.protect_your_moa.data.providers.ProtectItemModelProvider;
 import com.aetherteam.protect_your_moa.item.ProtectItems;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class ProtectItemModelData extends ProtectItemModelProvider {
     public ProtectItemModelData(PackOutput output, ExistingFileHelper helper) {

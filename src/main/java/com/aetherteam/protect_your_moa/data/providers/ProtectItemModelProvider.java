@@ -4,7 +4,7 @@ import com.aetherteam.nitrogen.data.providers.NitrogenItemModelProvider;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public abstract class ProtectItemModelProvider extends NitrogenItemModelProvider {
     public ProtectItemModelProvider(PackOutput output, ExistingFileHelper helper) {

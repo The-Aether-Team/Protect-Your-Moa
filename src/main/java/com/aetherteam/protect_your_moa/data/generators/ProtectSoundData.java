@@ -3,8 +3,8 @@ package com.aetherteam.protect_your_moa.data.generators;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.SoundDefinitionsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 
 public class ProtectSoundData extends SoundDefinitionsProvider {
     public ProtectSoundData(PackOutput output, ExistingFileHelper helper) {

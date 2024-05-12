@@ -3,7 +3,7 @@ package com.aetherteam.protect_your_moa.client.renderer.entity.layers;
 import com.aetherteam.aether.client.renderer.entity.model.MoaModel;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
-import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
+import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import com.aetherteam.protect_your_moa.client.renderer.entity.ProtectModelLayers;
 import com.aetherteam.protect_your_moa.client.renderer.entity.model.MoaChestModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -28,14 +28,12 @@ public class MoaChestLayer extends RenderLayer<Moa, MoaModel> {
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Moa moa, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        MoaArmor.get(moa).ifPresent(moaArmor -> {
-            if (moaArmor.hasChest()) {
-                this.getParentModel().copyPropertiesTo(this.model);
-                this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
-                this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(CHEST_LOCATION));
-                this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-            }
-        });
+        if (moa.getData(ProtectDataAttachments.MOA_ARMOR).hasChest()) {
+            this.getParentModel().copyPropertiesTo(this.model);
+            this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
+            this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(CHEST_LOCATION));
+            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        }
     }
 }

@@ -2,7 +2,7 @@ package com.aetherteam.protect_your_moa.client.gui.screen.inventory;
 
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
-import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
+import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import com.aetherteam.protect_your_moa.inventory.menu.MoaInventoryMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -31,11 +31,10 @@ public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
         guiGraphics.blit(MOA_INVENTORY_LOCATION, i, j, 0, 0, this.imageWidth, this.imageHeight);
-        MoaArmor.get(this.moa).ifPresent(moaArmor -> {
-            if (moaArmor.hasChest()) {
-                guiGraphics.blit(MOA_INVENTORY_LOCATION, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
-            }
-        });
+
+        if (this.moa.getData(ProtectDataAttachments.MOA_ARMOR).hasChest()) {
+            guiGraphics.blit(MOA_INVENTORY_LOCATION, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
+        }
 
         if (this.moa.isSaddleable()) {
             guiGraphics.blit(MOA_INVENTORY_LOCATION, i + 7, j + 35 - 18, 18, this.imageHeight + 54, 18, 18);
@@ -43,7 +42,7 @@ public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu
 
         guiGraphics.blit(MOA_INVENTORY_LOCATION, i + 7, j + 35, 0, this.imageHeight + 54, 18, 18);
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, i + 51, j + 63, 17, (float)(i + 51) - this.xMouse, (float)(j + 75 - 47) - this.yMouse, this.moa);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, i + 26, j + 18, i + 78, j + 70, 17, 0.25F, this.xMouse, this.yMouse, this.moa);
     }
 
     /**
@@ -54,7 +53,7 @@ public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu
      * @param partialTick the partial tick time.
      */
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         this.xMouse = (float)mouseX;
         this.yMouse = (float)mouseY;
         super.render(guiGraphics, mouseX, mouseY, partialTick);

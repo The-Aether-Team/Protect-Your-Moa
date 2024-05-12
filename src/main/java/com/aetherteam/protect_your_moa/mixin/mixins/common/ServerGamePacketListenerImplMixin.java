@@ -1,7 +1,7 @@
 package com.aetherteam.protect_your_moa.mixin.mixins.common;
 
 import com.aetherteam.aether.entity.passive.Moa;
-import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
+import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.Entity;
@@ -17,7 +17,7 @@ public class ServerGamePacketListenerImplMixin {
         ServerGamePacketListenerImpl impl = (ServerGamePacketListenerImpl) (Object) this;
         Entity entity = impl.getPlayer().getVehicle();
         if (entity instanceof Moa moa) {
-            MoaArmor.get(moa).ifPresent((moaArmor) -> moaArmor.openInventory(impl.getPlayer(), moa));
+            moa.getData(ProtectDataAttachments.MOA_ARMOR).openInventory(impl.getPlayer(), moa);
         }
     }
 }

@@ -7,12 +7,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @Mod.EventBusSubscriber(modid = ProtectYourMoa.MODID)
 public class EntityListener {
     @SubscribeEvent
-    public static void onInteractWithEntity(PlayerInteractEvent.EntityInteractSpecific event) {
+    public static void onInteractWithEntity(PlayerInteractEvent.EntityInteractSpecific event) { //todo doesnt work in here or aether
         Entity targetEntity = event.getTarget();
         Player player = event.getEntity();
         ItemStack itemStack = event.getItemStack();

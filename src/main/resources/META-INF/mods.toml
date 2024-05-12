@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[47,)"
+loaderVersion="[1,)"
 license="Assets: All Rights Reserved; Code: LGPL-3.0"
 issueTrackerURL="https://github.com/The-Aether-Team/Protect-Your-Moa/issues"
 
@@ -15,20 +15,23 @@ authors="bconlon, Oz Payn"
 description='''TBA.'''
 
 [[dependencies.aether_protect_your_moa]]
-    modId="forge"
-    mandatory=true
-    versionRange="[47.1.0,)"
+    modId="neoforge"
+    type = "required"
+    versionRange="[20.4.167,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.aether_protect_your_moa]]
     modId = "aether"
-    mandatory = true
-    versionRange = "[1.20.1-1.0.0-beta.1-forge,)"
+    type = "required"
+    versionRange = "[1.20.4-1.4.1-neoforge,)"
     ordering = "NONE"
     side = "BOTH"
 [[dependencies.aether_protect_your_moa]]
     modId="minecraft"
-    mandatory=true
-    versionRange="[1.20.1,)"
+    type = "required"
+    versionRange="[1.20.4,1.20.5)"
     ordering="NONE"
     side="BOTH"
+
+[[mixins]]
+    config="aether_protect_your_moa.mixins.json"

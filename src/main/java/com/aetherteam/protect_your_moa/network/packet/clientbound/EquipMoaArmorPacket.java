@@ -3,15 +3,16 @@ package com.aetherteam.protect_your_moa.network.packet.clientbound;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.network.BasePacket;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
-import com.aetherteam.protect_your_moa.client.MoaArmorClient;
+import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-public record OpenMoaInventoryPacket(int entityId, int containerSize, int containerId) implements BasePacket {
-    public static final ResourceLocation ID = new ResourceLocation(ProtectYourMoa.MODID, "open_moa_inventory");
+public record EquipMoaArmorPacket(int entityId, ItemStack armor) implements BasePacket {
+    public static final ResourceLocation ID = new ResourceLocation(ProtectYourMoa.MODID, "equip_moa_armor");
 
     @Override
     public ResourceLocation id() {
@@ -21,15 +22,13 @@ public record OpenMoaInventoryPacket(int entityId, int containerSize, int contai
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.entityId());
-        buf.writeVarInt(this.containerSize());
-        buf.writeByte(this.containerId());
+        buf.writeItem(this.armor());
     }
 
-    public static OpenMoaInventoryPacket decode(FriendlyByteBuf buf) {
+    public static EquipMoaArmorPacket decode(FriendlyByteBuf buf) {
         int entityId = buf.readInt();
-        int containerSize = buf.readVarInt();
-        int containerId = buf.readUnsignedByte();
-        return new OpenMoaInventoryPacket(entityId, containerSize, containerId);
+        ItemStack armor = buf.readItem();
+        return new EquipMoaArmorPacket(entityId, armor);
     }
 
     @Override
@@ -37,7 +36,7 @@ public record OpenMoaInventoryPacket(int entityId, int containerSize, int contai
         if (Minecraft.getInstance().player != null && Minecraft.getInstance().level != null) {
             Entity entity = Minecraft.getInstance().player.level().getEntity(this.entityId());
             if (entity instanceof Moa moa) {
-                MoaArmorClient.setToMoaInventoryScreen(Minecraft.getInstance().player, moa, this.containerSize(), this.containerId());
+                moa.getData(ProtectDataAttachments.MOA_ARMOR).setArmor(moa, this.armor());
             }
         }
     }

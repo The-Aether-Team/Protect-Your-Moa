@@ -1,7 +1,7 @@
 package com.aetherteam.protect_your_moa.inventory.menu;
 
 import com.aetherteam.aether.entity.passive.Moa;
-import com.aetherteam.protect_your_moa.capability.armor.MoaArmor;
+import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -86,11 +86,11 @@ public class MoaInventoryMenu extends AbstractContainerMenu {
     }
 
     public boolean stillValid(Player player) {
-        return MoaArmor.get(this.moa).isPresent() && MoaArmor.get(this.moa).resolve().isPresent() && MoaArmor.get(this.moa).resolve().get().getInventory() == this.moaContainer && this.moaContainer.stillValid(player) && this.moa.isAlive() && this.moa.distanceTo(player) < 8.0F;
+        return this.moa.getData(ProtectDataAttachments.MOA_ARMOR).getInventory() == this.moaContainer && this.moaContainer.stillValid(player) && this.moa.isAlive() && this.moa.distanceTo(player) < 8.0F;
     }
 
     private boolean hasChest(Moa moa) {
-        return MoaArmor.get(moa).isPresent() && MoaArmor.get(moa).resolve().isPresent() && MoaArmor.get(moa).resolve().get().hasChest();
+        return this.moa.getData(ProtectDataAttachments.MOA_ARMOR).hasChest();
     }
 
     public ItemStack quickMoveStack(Player player, int index) {
