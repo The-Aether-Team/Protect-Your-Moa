@@ -12,7 +12,9 @@ displayURL="https://modrinth.com/mod/aether-protect-your-moa"
 logoFile="protect_your_moa_icon.png"
 credits="The Aether Team"
 authors="bconlon, Oz Payn"
-description='''TBA.'''
+description='''
+    An addon centered around equipment for Moas, allowing them to be outfitted with chests and craftable Moa Armor.
+'''
 
 [[dependencies.aether_protect_your_moa]]
     modId="forge"
