@@ -12,7 +12,7 @@ public class MoaMixin {
     @ModifyReturnValue(at = @At(value = "RETURN"), method = "getMaxJumps()I", remap = false)
     private int getMaxJumps(int original) {
         Moa moa = (Moa) (Object) this;
-        if (moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor(moa) != null && moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor(moa).is(ProtectItems.GRAVITITE_MOA_ARMOR.get())) {
+        if (moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor() != null && moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor().is(ProtectItems.GRAVITITE_MOA_ARMOR.get())) {
             return original + 3;
         }
         return original;

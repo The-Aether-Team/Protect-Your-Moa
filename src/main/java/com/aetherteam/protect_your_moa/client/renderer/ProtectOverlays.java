@@ -37,7 +37,7 @@ public class ProtectOverlays {
     private static void renderMoaJumps(GuiGraphics guiGraphics, Window window, LocalPlayer player) {
         if (player.getVehicle() instanceof Moa moa) {
             int jumps = moa.getMaxJumps() - 3;
-            if (moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor(moa) != null && moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor(moa).is(ProtectItems.GRAVITITE_MOA_ARMOR.get())) {
+            if (moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor() != null && moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor().is(ProtectItems.GRAVITITE_MOA_ARMOR.get())) {
                 for (int jumpCount = jumps; jumpCount < moa.getMaxJumps(); jumpCount++) {
                     int xPos = ((window.getGuiScaledWidth() / 2) + (jumpCount * 8)) - (moa.getMaxJumps() * 8) / 2;
                     int yPos = 18;

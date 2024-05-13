@@ -5,9 +5,7 @@ import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
 import com.aetherteam.protect_your_moa.data.ProtectData;
 import com.aetherteam.protect_your_moa.item.ProtectItems;
 import com.aetherteam.protect_your_moa.network.packet.MoaArmorSyncPacket;
-import com.aetherteam.protect_your_moa.network.packet.clientbound.EquipMoaArmorPacket;
 import com.aetherteam.protect_your_moa.network.packet.clientbound.OpenMoaInventoryPacket;
-import com.aetherteam.protect_your_moa.network.packet.clientbound.SetMoaChestPacket;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -41,9 +39,7 @@ public class ProtectYourMoa {
         IPayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
 
         // CLIENTBOUND
-        registrar.play(EquipMoaArmorPacket.ID, EquipMoaArmorPacket::decode, payload -> payload.client(EquipMoaArmorPacket::handle));
         registrar.play(OpenMoaInventoryPacket.ID, OpenMoaInventoryPacket::decode, payload -> payload.client(OpenMoaInventoryPacket::handle));
-        registrar.play(SetMoaChestPacket.ID, SetMoaChestPacket::decode, payload -> payload.client(SetMoaChestPacket::handle));
 
         // BOTH
         registrar.play(MoaArmorSyncPacket.ID, MoaArmorSyncPacket::decode, MoaArmorSyncPacket::handle);

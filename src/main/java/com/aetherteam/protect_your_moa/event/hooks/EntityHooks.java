@@ -2,12 +2,9 @@ package com.aetherteam.protect_your_moa.event.hooks;
 
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
-import com.aetherteam.nitrogen.network.PacketRelay;
 import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
 import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
-import com.aetherteam.protect_your_moa.network.packet.clientbound.EquipMoaArmorPacket;
-import com.aetherteam.protect_your_moa.network.packet.clientbound.SetMoaChestPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
@@ -35,10 +32,9 @@ public class EntityHooks {
 
     public static Optional<InteractionResult> equipMoaArmor(Entity target, Player player, ItemStack stack) {
         if (target instanceof Moa moa && moa.isPlayerGrown() && !moa.isBaby() && !moa.isVehicle()) {
-            if (!stack.isEmpty() && stack.getItem() instanceof MoaArmorItem && moa.getData(ProtectDataAttachments.MOA_ARMOR).isArmor(stack) && !player.isSecondaryUseActive() && !moa.getData(ProtectDataAttachments.MOA_ARMOR).isWearingArmor(moa)) {
+            if (!stack.isEmpty() && stack.getItem() instanceof MoaArmorItem && moa.getData(ProtectDataAttachments.MOA_ARMOR).isArmor(stack) && !player.isSecondaryUseActive() && !moa.getData(ProtectDataAttachments.MOA_ARMOR).isWearingArmor()) {
                 if (!player.level().isClientSide()) {
-                    moa.getData(ProtectDataAttachments.MOA_ARMOR).setArmor(moa, stack);
-                    PacketRelay.sendToAll(new EquipMoaArmorPacket(moa.getId(), stack));
+                    moa.getData(ProtectDataAttachments.MOA_ARMOR).setSynched(moa.getId(), INBTSynchable.Direction.CLIENT, "equipArmor", stack);
                     if (!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
@@ -55,8 +51,7 @@ public class EntityHooks {
         if (target instanceof Moa moa && moa.isPlayerGrown() && !moa.isBaby() && !moa.isVehicle()) {
             if (!stack.isEmpty() && stack.is(Items.CHEST) && !player.isSecondaryUseActive() && !moa.getData(ProtectDataAttachments.MOA_ARMOR).hasChest()) {
                 if (!player.level().isClientSide()) {
-                    moa.getData(ProtectDataAttachments.MOA_ARMOR).setChest(true);
-                    PacketRelay.sendToAll(new SetMoaChestPacket(moa.getId(), true));
+                    moa.getData(ProtectDataAttachments.MOA_ARMOR).setSynched(moa.getId(), INBTSynchable.Direction.CLIENT, "setChest", true);
                     moa.playSound(ProtectSoundEvents.ENTITY_MOA_CHEST.get(), 1.0F, (moa.getRandom().nextFloat() - moa.getRandom().nextFloat()) * 0.2F + 1.0F);
                     if (!player.getAbilities().instabuild) {
                         stack.shrink(1);

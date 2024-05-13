@@ -29,7 +29,7 @@ public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Moa moa, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        ItemStack itemStack = moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor(moa);
+        ItemStack itemStack = moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor();
         if (itemStack != null && !itemStack.isEmpty() && itemStack.getItem() instanceof MoaArmorItem moaArmorItem) {
             this.getParentModel().copyPropertiesTo(this.model);
             this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);

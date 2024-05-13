@@ -18,7 +18,7 @@ public class AetherOverlaysMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;getGuiScaledWidth()I", shift = At.Shift.BEFORE), method = "renderMoaJumps(Lnet/minecraft/client/gui/GuiGraphics;Lcom/mojang/blaze3d/platform/Window;Lnet/minecraft/client/player/LocalPlayer;)V", cancellable = true)
     private static void renderMoaJumps(GuiGraphics guiGraphics, Window window, LocalPlayer player, CallbackInfo ci, @Local Moa moa, @Local(ordinal = 0) int jumpCount) {
         int jumps = moa.getMaxJumps() - 3;
-        if (moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor(moa) != null && moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor(moa).is(ProtectItems.GRAVITITE_MOA_ARMOR.get())) {
+        if (moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor() != null && moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor().is(ProtectItems.GRAVITITE_MOA_ARMOR.get())) {
             if (jumpCount > jumps - 1) {
                 ci.cancel();
             }
