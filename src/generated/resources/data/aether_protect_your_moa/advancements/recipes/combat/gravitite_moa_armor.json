@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_gravitite",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_gravitite"
     ]
   ],
   "rewards": {
     "recipes": [
       "aether_protect_your_moa:gravitite_moa_armor"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
