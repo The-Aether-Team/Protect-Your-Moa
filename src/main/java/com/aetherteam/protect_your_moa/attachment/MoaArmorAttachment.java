@@ -4,17 +4,14 @@ import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.nitrogen.network.BasePacket;
 import com.aetherteam.nitrogen.network.PacketRelay;
-import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.inventory.menu.MoaInventoryMenu;
 import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
 import com.aetherteam.protect_your_moa.network.packet.MoaArmorSyncPacket;
 import com.aetherteam.protect_your_moa.network.packet.clientbound.OpenMoaInventoryPacket;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.SimpleContainer;
@@ -27,21 +24,20 @@ import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import org.apache.commons.lang3.tuple.Triple;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class MoaArmorAttachment implements INBTSynchable, ContainerListener {
+public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<CompoundTag>, ContainerListener {
     private static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("F7EC75AF-718C-45BF-99E8-ADFF0BCAB659");
 
-    private Moa moa;
+    private final Moa moa;
+
     private boolean chested;
     private SimpleContainer inventory;
     private boolean shouldSyncChest;
@@ -53,32 +49,44 @@ public class MoaArmorAttachment implements INBTSynchable, ContainerListener {
             Map.entry("setShouldSyncChest", Triple.of(Type.BOOLEAN, (object) -> this.setShouldSyncChest((boolean) object), this::shouldSyncChest))
     );
 
+    public MoaArmorAttachment(Moa moa) {
+        this.moa = moa;
+        this.createInventory();
+    }
+
+    public Moa getMoa() {
+        return this.moa;
+    }
+
     /**
      * [CODE COPY] - {@link AbstractHorse#addAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#addAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#addAdditionalSaveData(CompoundTag)}.
      */
-    public static final Codec<MoaArmorAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ItemStack.CODEC.optionalFieldOf("saddle_item", ItemStack.EMPTY).forGetter((moaArmorAttachment) -> moaArmorAttachment.getInventory().getItem(0)),
-            ItemStack.CODEC.optionalFieldOf("armor_item", ItemStack.EMPTY).forGetter((moaArmorAttachment) -> moaArmorAttachment.getInventory().getItem(1)),
-            Codec.BOOL.fieldOf("chested").forGetter(MoaArmorAttachment::hasChest),
-            ExtraCodecs.strictUnboundedMap(Codec.INT, ItemStack.CODEC).fieldOf("inventory").forGetter((moaArmorAttachment) -> {
-                Map<Integer, ItemStack> inventory = new HashMap<>();
-                if (moaArmorAttachment.hasChest()) {
-                    for (int i = 2; i < moaArmorAttachment.inventory.getContainerSize(); ++i) {
-                        ItemStack itemStack = moaArmorAttachment.inventory.getItem(i);
-                        if (!itemStack.isEmpty()) {
-                            inventory.put(i, itemStack);
-                        }
-                    }
+    @Override
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
+        if (!this.getInventory().getItem(0).isEmpty()) {
+            tag.put("SaddleItem", this.inventory.getItem(0).save(new CompoundTag()));
+        }
+        if (!this.getInventory().getItem(1).isEmpty()) {
+            tag.put("ArmorItem", this.inventory.getItem(1).save(new CompoundTag()));
+        }
+        tag.putBoolean("Chested", this.hasChest());
+        if (this.hasChest()) {
+            ListTag list = new ListTag();
+            for (int i = 2; i < this.inventory.getContainerSize(); ++i) {
+                ItemStack itemstack = this.inventory.getItem(i);
+                if (!itemstack.isEmpty()) {
+                    CompoundTag slotTag = new CompoundTag();
+                    slotTag.putByte("Slot", (byte)i);
+                    itemstack.save(slotTag);
+                    list.add(slotTag);
                 }
-                ProtectYourMoa.LOGGER.info(String.valueOf(inventory));
-                return inventory;
-            })
-    ).apply(instance, MoaArmorAttachment::new));
-
-    public MoaArmorAttachment() {
-        this.createInventory();
+            }
+            tag.put("Items", list);
+        }
+        return tag;
     }
 
     /**
@@ -86,37 +94,42 @@ public class MoaArmorAttachment implements INBTSynchable, ContainerListener {
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#readAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#readAdditionalSaveData(CompoundTag)}.
      */
-    protected MoaArmorAttachment(ItemStack saddleItem, ItemStack armorItem, boolean chested, Map<Integer, ItemStack> inventory) {
-        this.createInventory();
-        if (!saddleItem.isEmpty() && saddleItem.is(Items.SADDLE)) {
-            this.getInventory().setItem(0, saddleItem);
-        }
-        if (!armorItem.isEmpty() && this.isArmor(armorItem)) {
-            this.getInventory().setItem(1, armorItem);
-        }
-        this.setChest(chested);
-        if (this.hasChest()) {
-            for (Map.Entry<Integer, ItemStack> entry : inventory.entrySet()) {
-                this.inventory.setItem(entry.getKey(), entry.getValue());
+    @Override
+    public void deserializeNBT(CompoundTag tag) {
+        if (tag.contains("SaddleItem", 10)) {
+            ItemStack itemStack = ItemStack.of(tag.getCompound("SaddleItem"));
+            if (itemStack.is(Items.SADDLE)) {
+                this.getInventory().setItem(0, itemStack);
             }
         }
+        if (tag.contains("ArmorItem", 10)) {
+            ItemStack itemstack = ItemStack.of(tag.getCompound("ArmorItem"));
+            if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
+                this.getInventory().setItem(1, itemstack);
+            }
+        }
+        this.setChest(tag.getBoolean("Chested"));
+        if (this.hasChest()) {
+            ListTag list = tag.getList("Items", 10);
+
+            for(int i = 0; i < list.size(); ++i) {
+                CompoundTag compoundtag = list.getCompound(i);
+                int j = compoundtag.getByte("Slot") & 255;
+                if (j >= 2 && j < this.inventory.getContainerSize()) {
+                    this.inventory.setItem(j, ItemStack.of(compoundtag));
+                }
+            }
+        }
+        this.updateContainerEquipment();
     }
 
-    public Moa getMoa() {
-        return this.moa;
-    }
-
-    public void onJoinLevel(Moa moa) {
-        this.moa = moa;
+    public void onJoinLevel() {
         if (this.getMoa().level().isClientSide()) {
             this.setSynched(this.getMoa().getId(), Direction.SERVER, "setShouldSyncChest", true);
         }
     }
 
-    public void onUpdate(Moa moa) {
-        if (this.getMoa() == null) {
-            this.moa = moa;
-        }
+    public void onUpdate() {
         this.syncChest();
     }
 
@@ -133,6 +146,7 @@ public class MoaArmorAttachment implements INBTSynchable, ContainerListener {
      * [CODE COPY] - {@link AbstractHorse#containerChanged(Container)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#containerChanged(Container)}.
      */
+    @Override
     public void containerChanged(Container container) {
         ItemStack oldArmorStack = this.getArmor();
 
