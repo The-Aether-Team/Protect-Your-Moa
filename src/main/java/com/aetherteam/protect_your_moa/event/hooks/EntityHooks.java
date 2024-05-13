@@ -68,13 +68,13 @@ public class EntityHooks {
 
     public static void onJoinLevel(Entity entity) {
         if (entity instanceof Moa moa) {
-            moa.getData(ProtectDataAttachments.MOA_ARMOR).onJoinLevel(moa);
+            moa.getData(ProtectDataAttachments.MOA_ARMOR).onJoinLevel();
         }
     }
 
     public static void onUpdate(Entity entity) {
         if (entity instanceof Moa moa) {
-            moa.getData(ProtectDataAttachments.MOA_ARMOR).onUpdate(moa);
+            moa.getData(ProtectDataAttachments.MOA_ARMOR).onUpdate();
         }
     }
 
