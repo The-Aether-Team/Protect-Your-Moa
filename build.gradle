@@ -24,6 +24,8 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+
 runs {
     configureEach {
         systemProperty 'forge.logging.markers', 'REGISTRIES'
@@ -97,7 +99,12 @@ tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
             mod_id                 : mod_id,
             mod_name               : mod_name,
-            mod_version            : mod_version
+            mod_version            : mod_version,
+            mc_version             : mc_version,
+            mc_version_range       : mc_version_range,
+            neoforge_version            : neoforge_version,
+            neoforge_version_range      : neoforge_version_range,
+            loader_version_range   : loader_version_range
     ]
     inputs.properties replaceProperties
 

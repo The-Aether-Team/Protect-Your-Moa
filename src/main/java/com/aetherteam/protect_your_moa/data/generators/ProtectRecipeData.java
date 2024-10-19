@@ -3,13 +3,16 @@ package com.aetherteam.protect_your_moa.data.generators;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.protect_your_moa.data.providers.ProtectRecipeProvider;
 import com.aetherteam.protect_your_moa.item.ProtectItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.neoforged.neoforge.common.Tags;
 
+import java.util.concurrent.CompletableFuture;
+
 public class ProtectRecipeData extends ProtectRecipeProvider {
-    public ProtectRecipeData(PackOutput output) {
-        super(output);
+    public ProtectRecipeData(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider);
     }
 
     @Override

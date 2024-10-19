@@ -5,6 +5,7 @@ import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
 import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
@@ -13,7 +14,9 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.Collection;
@@ -93,7 +96,7 @@ public class EntityHooks {
                 drops.removeIf(itemEntity -> itemEntity.getItem().is(Items.SADDLE));
                 for (int i = 0; i < inventory.getContainerSize(); ++i) {
                     ItemStack itemStack = inventory.getItem(i);
-                    if (!itemStack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemStack)) {
+                    if (!itemStack.isEmpty() && EnchantmentHelper.getTagEnchantmentLevel((Holder<Enchantment>) Enchantments.VANISHING_CURSE, itemStack) <= 0) {
                         ItemEntity itemEntity = new ItemEntity(moa.level(), moa.getX(), moa.getY() + (double) 0.0F, moa.getZ(), itemStack);
                         itemEntity.setDefaultPickUpDelay();
                         drops.add(itemEntity);

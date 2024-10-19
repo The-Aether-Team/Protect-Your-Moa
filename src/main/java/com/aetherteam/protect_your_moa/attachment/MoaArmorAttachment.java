@@ -2,9 +2,8 @@ package com.aetherteam.protect_your_moa.attachment;
 
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
-import com.aetherteam.nitrogen.network.packet.SyncEntityPacket;
 import com.aetherteam.nitrogen.network.packet.SyncPacket;
-import com.aetherteam.nitrogen.network.packet.serverbound.TriggerUpdateInfoPacket;
+import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.inventory.menu.MoaInventoryMenu;
 import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
 import com.aetherteam.protect_your_moa.network.packet.MoaArmorSyncPacket;
@@ -12,6 +11,7 @@ import com.aetherteam.protect_your_moa.network.packet.clientbound.OpenMoaInvento
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
@@ -66,14 +66,15 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#addAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#addAdditionalSaveData(CompoundTag)}.
      */
+
     @Override
-    public CompoundTag serializeNBT() {
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
         if (!this.getInventory().getItem(0).isEmpty()) {
-            tag.put("SaddleItem", this.inventory.getItem(0).save(new CompoundTag()));
+            tag.put("SaddleItem", this.inventory.getItem(0).save(this.getMoa().level().registryAccess()));
         }
         if (!this.getInventory().getItem(1).isEmpty()) {
-            tag.put("ArmorItem", this.inventory.getItem(1).save(new CompoundTag()));
+            tag.put("ArmorItem", this.inventory.getItem(1).save(this.getMoa().level().registryAccess()));
         }
         tag.putBoolean("Chested", this.hasChest());
         if (this.hasChest()) {
@@ -83,7 +84,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
                 if (!itemstack.isEmpty()) {
                     CompoundTag slotTag = new CompoundTag();
                     slotTag.putByte("Slot", (byte)i);
-                    itemstack.save(slotTag);
+                    itemstack.save(this.getMoa().level().registryAccess());
                     list.add(slotTag);
                 }
             }
@@ -97,16 +98,16 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#readAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#readAdditionalSaveData(CompoundTag)}.
      */
-    @Override
-    public void deserializeNBT(CompoundTag tag) {
+
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
         if (tag.contains("SaddleItem", 10)) {
-            ItemStack itemStack = ItemStack.parseOptional(tag.getCompound("SaddleItem"));
+            ItemStack itemStack = ItemStack.parse(this.moa.registryAccess(), tag.getCompound("SaddleItem")).orElse(ItemStack.EMPTY);
             if (itemStack.is(Items.SADDLE)) {
                 this.getInventory().setItem(0, itemStack);
             }
         }
         if (tag.contains("ArmorItem", 10)) {
-            ItemStack itemstack = ItemStack.of(tag.getCompound("ArmorItem"));
+            ItemStack itemstack = ItemStack.parse(this.moa.registryAccess(), tag.getCompound("ArmorItem")).orElse(ItemStack.EMPTY);
             if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
                 this.getInventory().setItem(1, itemstack);
             }
@@ -119,7 +120,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
                 CompoundTag compoundtag = list.getCompound(i);
                 int j = compoundtag.getByte("Slot") & 255;
                 if (j >= 2 && j < this.inventory.getContainerSize()) {
-                    this.inventory.setItem(j, ItemStack.of(compoundtag));
+                    this.inventory.setItem(j, ItemStack.parse(this.moa.registryAccess(), compoundtag).orElse(ItemStack.EMPTY));
                 }
             }
         }
@@ -149,6 +150,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link AbstractHorse#containerChanged(Container)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#containerChanged(Container)}.
      */
+
     @Override
     public void containerChanged(Container container) {
         ItemStack oldArmorStack = this.getArmor();
@@ -169,6 +171,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link AbstractHorse#updateContainerEquipment()}.<br><br>
      * [CODE COPY] - {@link Horse#updateContainerEquipment()}.
      */
+
     private void updateContainerEquipment() {
         if (!this.getMoa().level().isClientSide()) {
             this.getMoa().setSaddled(!this.getInventory().getItem(0).isEmpty());
@@ -180,16 +183,17 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
     /**
      * [CODE COPY] - {@link Horse#setArmorEquipment(ItemStack)}.
      */
+
     private void setArmorEquipment(ItemStack stack) {
         this.setArmor(stack);
         if (!this.getMoa().level().isClientSide()) {
             AttributeInstance armorAttribute = this.getMoa().getAttribute(Attributes.ARMOR);
             if (armorAttribute != null) {
-                armorAttribute.removeModifier(ARMOR_MODIFIER_UUID);
+                armorAttribute.removeModifier(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "Horse armor bonus"));
                 if (this.isArmor(stack)) {
                     int protection = ((MoaArmorItem) stack.getItem()).getProtection();
                     if (protection != 0) {
-                        armorAttribute.addTransientModifier(new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", protection, AttributeModifier.Operation.ADDITION));
+                        armorAttribute.addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "Horse armor bonus"), protection, AttributeModifier.Operation.ADD_VALUE));
                     }
                 }
             }
@@ -199,6 +203,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
     /**
      * [CODE COPY] - {@link AbstractHorse#createInventory()}.
      */
+
     public void createInventory() {
         SimpleContainer simplecontainer = this.inventory;
         this.inventory = new SimpleContainer(this.getInventorySize());
@@ -220,12 +225,13 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
     /**
      * [CODE COPY] - {@link ServerPlayer#openHorseInventory(AbstractHorse, Container)}.
      */
+
     public void openInventory(ServerPlayer serverPlayer, Moa moa) {
         if (serverPlayer.containerMenu != serverPlayer.inventoryMenu) {
             serverPlayer.closeContainer();
         }
         serverPlayer.nextContainerCounter();
-        Sync.sendToPlayer(new OpenMoaInventoryPacket(moa.getId(), inventory.getContainerSize(), serverPlayer.containerMenu.containerId), serverPlayer);
+        serverPlayer.connection.send(new OpenMoaInventoryPacket(moa.getId(), inventory.getContainerSize(), (byte) serverPlayer.containerMenu.containerId));
         serverPlayer.containerMenu = new MoaInventoryMenu(serverPlayer.containerMenu.containerId, serverPlayer.getInventory(), inventory, moa);
         serverPlayer.initInventoryMenu();
         NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(serverPlayer, serverPlayer.containerMenu));
@@ -291,15 +297,5 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
 
     public SyncPacket getSyncPacket(int entityID, String key, Type type, Object value) {
         return new MoaArmorSyncPacket(entityID, key, type, value);
-    }
-
-    @Override
-    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
-        return null;
-    }
-
-    @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
-
     }
 }

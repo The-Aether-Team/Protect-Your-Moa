@@ -14,6 +14,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class EntityListener {
     }
 
     @SubscribeEvent
-    public static void onEntityTick(LivingEvent event) {
+    public static void onEntityTick(EntityTickEvent.Pre event) {
         Entity entity = event.getEntity();
         EntityHooks.onUpdate(entity);
     }

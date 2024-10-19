@@ -39,9 +39,9 @@ public class ProtectYourMoa {
         PayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
 
         // CLIENTBOUND
-        registrar.playToClient(OpenMoaInventoryPacket.ID, OpenMoaInventoryPacket::decode, OpenMoaInventoryPacket::handle);
+        registrar.playToClient(OpenMoaInventoryPacket.TYPE, OpenMoaInventoryPacket.STREAM_CODEC, OpenMoaInventoryPacket::execute);
 
         // BOTH
-        registrar.playBidirectional(MoaArmorSyncPacket.ID, MoaArmorSyncPacket::decode, MoaArmorSyncPacket::handle);
+        registrar.playBidirectional(MoaArmorSyncPacket.TYPE, MoaArmorSyncPacket.STREAM_CODEC, MoaArmorSyncPacket::execute);
     }
 }
