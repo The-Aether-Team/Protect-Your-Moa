@@ -1,61 +1,7 @@
 {
-  "aether:recipes/food/skyroot_milk_bucket_moa_egg_cake": {
-    "criteria": {
-      "has_moa_egg": "2024-10-19 18:04:11 +0200"
-    },
-    "done": true
-  },
-  "minecraft:adventure/minecraft_trials_edition": {
-    "criteria": {
-      "minecraft_trials_edition": "2024-10-19 18:03:43 +0200"
-    },
-    "done": true
-  },
-  "aether:black_moa": {
-    "criteria": {
-      "black_moa": "2024-10-19 18:08:52 +0200"
-    },
-    "done": true
-  },
-  "aether:recipes/incubation/black_moa_incubation": {
-    "criteria": {
-      "has_black_moa_egg": "2024-10-19 18:04:11 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/decorations/glow_item_frame": {
-    "criteria": {
-      "has_item_frame": "2024-10-19 18:04:39 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/decorations/crafting_table": {
     "criteria": {
       "unlock_right_away": "2024-10-19 18:02:42 +0200"
-    },
-    "done": true
-  },
-  "aether:obtain_petal": {
-    "criteria": {
-      "aechor_petal": "2024-10-19 18:04:19 +0200"
-    },
-    "done": true
-  },
-  "aether:incubate_moa": {
-    "criteria": {
-      "incubate_moa": "2024-10-19 18:05:28 +0200"
-    },
-    "done": true
-  },
-  "aether:recipes/food/moa_egg_cake": {
-    "criteria": {
-      "has_moa_egg": "2024-10-19 18:04:11 +0200"
-    },
-    "done": true
-  },
-  "aether:recipes/combat/poison_dart_shooter": {
-    "criteria": {
-      "has_aechor_petal": "2024-10-19 18:04:19 +0200"
     },
     "done": true
   },
@@ -65,9 +11,75 @@
     },
     "done": false
   },
+  "minecraft:adventure/minecraft_trials_edition": {
+    "criteria": {
+      "minecraft_trials_edition": "2024-10-19 18:03:43 +0200"
+    },
+    "done": true
+  },
+  "aether:recipes/food/skyroot_milk_bucket_moa_egg_cake": {
+    "criteria": {
+      "has_moa_egg": "2024-10-19 18:04:11 +0200"
+    },
+    "done": true
+  },
+  "aether:recipes/incubation/black_moa_incubation": {
+    "criteria": {
+      "has_black_moa_egg": "2024-10-19 18:04:11 +0200"
+    },
+    "done": true
+  },
+  "aether:recipes/food/moa_egg_cake": {
+    "criteria": {
+      "has_moa_egg": "2024-10-19 18:04:11 +0200"
+    },
+    "done": true
+  },
   "aether:obtain_egg": {
     "criteria": {
       "moa_egg": "2024-10-19 18:04:11 +0200"
+    },
+    "done": true
+  },
+  "aether:obtain_petal": {
+    "criteria": {
+      "aechor_petal": "2024-10-19 18:04:19 +0200"
+    },
+    "done": true
+  },
+  "aether:recipes/combat/poison_dart_shooter": {
+    "criteria": {
+      "has_aechor_petal": "2024-10-19 18:04:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/glow_item_frame": {
+    "criteria": {
+      "has_item_frame": "2024-10-19 18:04:39 +0200"
+    },
+    "done": true
+  },
+  "aether:incubate_moa": {
+    "criteria": {
+      "incubate_moa": "2024-10-19 18:05:28 +0200"
+    },
+    "done": true
+  },
+  "aether:black_moa": {
+    "criteria": {
+      "black_moa": "2024-10-19 18:08:52 +0200"
+    },
+    "done": true
+  },
+  "aether_protect_your_moa:recipes/combat/diamond_moa_armor": {
+    "criteria": {
+      "has_diamond": "2024-10-19 18:16:58 +0200"
+    },
+    "done": true
+  },
+  "aether_protect_your_moa:recipes/combat/gravitite_moa_armor": {
+    "criteria": {
+      "has_gravitite": "2024-10-19 18:16:58 +0200"
     },
     "done": true
   },
