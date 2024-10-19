@@ -4,14 +4,16 @@ import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.network.BasePacket;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.client.MoaArmorClient;
+import io.wispforest.accessories.networking.BaseAccessoriesPacket;
+import io.wispforest.accessories.networking.base.BaseNetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
-public record OpenMoaInventoryPacket(int entityId, int containerSize, int containerId) implements BasePacket {
-    public static final ResourceLocation ID = new ResourceLocation(ProtectYourMoa.MODID, "open_moa_inventory");
+public record OpenMoaInventoryPacket(int entityId, int containerSize, int containerId) implements BaseAccessoriesPacket {
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "open_moa_inventory");
 
     @Override
     public ResourceLocation id() {
@@ -40,5 +42,10 @@ public record OpenMoaInventoryPacket(int entityId, int containerSize, int contai
                 MoaArmorClient.setToMoaInventoryScreen(Minecraft.getInstance().player, moa, this.containerSize(), this.containerId());
             }
         }
+    }
+
+    @Override
+    public BaseNetworkHandler handler() {
+        return BaseAccessoriesPacket.super.handler();
     }
 }

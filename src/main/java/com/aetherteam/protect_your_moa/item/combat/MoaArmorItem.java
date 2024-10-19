@@ -11,7 +11,7 @@ public class MoaArmorItem extends Item {
     private final ResourceLocation texture;
 
     public MoaArmorItem(int protection, String identifier, Item.Properties properties) {
-        this(protection, new ResourceLocation(ProtectYourMoa.MODID, "textures/entity/moa/armor/moa_armor_" + identifier + ".png"), properties);
+        this(protection, ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "textures/entity/moa/armor/moa_armor_" + identifier + ".png"), properties);
     }
 
     public MoaArmorItem(int protection, ResourceLocation identifier, Item.Properties properties) {

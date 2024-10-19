@@ -12,21 +12,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 
-@Mod.EventBusSubscriber(modid = ProtectYourMoa.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = ProtectYourMoa.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class ProtectOverlays {
-    private static final ResourceLocation TEXTURE_JUMPS = new ResourceLocation(ProtectYourMoa.MODID, "textures/gui/jumps_gravitite.png");
+    private static final ResourceLocation TEXTURE_JUMPS = ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "textures/gui/jumps_gravitite.png");
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void registerOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("moa_jumps_gravitite", (gui, graphics, partialTicks, screenWidth, screenHeight) -> {
+    public static void registerOverlays(RegisterGuiLayersEvent event) {
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath( ProtectYourMoa.MODID, "moa_jumps_gravitite"), (gui, deltaTracker) -> {
             Minecraft minecraft = Minecraft.getInstance();
             Window window = minecraft.getWindow();
             LocalPlayer player = minecraft.player;
             if (player != null) {
-                renderMoaJumps(graphics, window, player);
+                renderMoaJumps(gui, window, player);
             }
         });
     }

@@ -14,7 +14,7 @@ public class ProtectRecipeData extends ProtectRecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
-        this.moaArmor(recipeOutput, ProtectItems.LEATHER_MOA_ARMOR.get(), Tags.Items.LEATHER, "leather");
+        this.moaArmor(recipeOutput, ProtectItems.LEATHER_MOA_ARMOR.get(), Tags.Items.LEATHERS, "leather");
         this.moaArmor(recipeOutput, ProtectItems.IRON_MOA_ARMOR.get(), Tags.Items.INGOTS_IRON, "iron");
         this.moaArmor(recipeOutput, ProtectItems.GOLDEN_MOA_ARMOR.get(), Tags.Items.INGOTS_GOLD, "gold");
         this.moaArmor(recipeOutput, ProtectItems.DIAMOND_MOA_ARMOR.get(), Tags.Items.GEMS_DIAMOND, "diamond");

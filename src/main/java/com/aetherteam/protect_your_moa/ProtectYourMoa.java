@@ -10,8 +10,8 @@ import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
@@ -35,13 +35,13 @@ public class ProtectYourMoa {
         }
     }
 
-    public void registerPackets(RegisterPayloadHandlerEvent event) {
-        IPayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
+    public void registerPackets(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
 
         // CLIENTBOUND
-        registrar.play(OpenMoaInventoryPacket.ID, OpenMoaInventoryPacket::decode, payload -> payload.client(OpenMoaInventoryPacket::handle));
+        registrar.playToClient(OpenMoaInventoryPacket.ID, OpenMoaInventoryPacket::decode, OpenMoaInventoryPacket::handle);
 
         // BOTH
-        registrar.play(MoaArmorSyncPacket.ID, MoaArmorSyncPacket::decode, MoaArmorSyncPacket::handle);
+        registrar.playBidirectional(MoaArmorSyncPacket.ID, MoaArmorSyncPacket::decode, MoaArmorSyncPacket::handle);
     }
 }

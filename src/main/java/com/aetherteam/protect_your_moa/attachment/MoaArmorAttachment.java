@@ -2,12 +2,14 @@ package com.aetherteam.protect_your_moa.attachment;
 
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
-import com.aetherteam.nitrogen.network.BasePacket;
-import com.aetherteam.nitrogen.network.PacketRelay;
+import com.aetherteam.nitrogen.network.packet.SyncEntityPacket;
+import com.aetherteam.nitrogen.network.packet.SyncPacket;
+import com.aetherteam.nitrogen.network.packet.serverbound.TriggerUpdateInfoPacket;
 import com.aetherteam.protect_your_moa.inventory.menu.MoaInventoryMenu;
 import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
 import com.aetherteam.protect_your_moa.network.packet.MoaArmorSyncPacket;
 import com.aetherteam.protect_your_moa.network.packet.clientbound.OpenMoaInventoryPacket;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,6 +29,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import org.apache.commons.lang3.tuple.Triple;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.Map;
 import java.util.UUID;
@@ -97,7 +100,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
     @Override
     public void deserializeNBT(CompoundTag tag) {
         if (tag.contains("SaddleItem", 10)) {
-            ItemStack itemStack = ItemStack.of(tag.getCompound("SaddleItem"));
+            ItemStack itemStack = ItemStack.parseOptional(tag.getCompound("SaddleItem"));
             if (itemStack.is(Items.SADDLE)) {
                 this.getInventory().setItem(0, itemStack);
             }
@@ -222,9 +225,9 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
             serverPlayer.closeContainer();
         }
         serverPlayer.nextContainerCounter();
-        PacketRelay.sendToPlayer(new OpenMoaInventoryPacket(moa.getId(), inventory.getContainerSize(), serverPlayer.containerCounter), serverPlayer);
-        serverPlayer.containerMenu = new MoaInventoryMenu(serverPlayer.containerCounter, serverPlayer.getInventory(), inventory, moa);
-        serverPlayer.initMenu(serverPlayer.containerMenu);
+        Sync.sendToPlayer(new OpenMoaInventoryPacket(moa.getId(), inventory.getContainerSize(), serverPlayer.containerMenu.containerId), serverPlayer);
+        serverPlayer.containerMenu = new MoaInventoryMenu(serverPlayer.containerMenu.containerId, serverPlayer.getInventory(), inventory, moa);
+        serverPlayer.initInventoryMenu();
         NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(serverPlayer, serverPlayer.containerMenu));
     }
 
@@ -286,7 +289,17 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
         return this.synchableFunctions;
     }
 
-    public BasePacket getSyncPacket(int entityID, String key, Type type, Object value) {
+    public SyncPacket getSyncPacket(int entityID, String key, Type type, Object value) {
         return new MoaArmorSyncPacket(entityID, key, type, value);
+    }
+
+    @Override
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        return null;
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
+
     }
 }
