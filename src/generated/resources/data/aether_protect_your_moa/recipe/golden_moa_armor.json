@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:ingots/gold"
+    },
+    "L": {
+      "tag": "c:leathers"
+    }
+  },
+  "pattern": [
+    "  #",
+    "#L#",
+    "# #"
+  ],
+  "result": {
+    "count": 1,
+    "id": "aether_protect_your_moa:golden_moa_armor"
+  }
+}

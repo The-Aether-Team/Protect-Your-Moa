@@ -12,12 +12,16 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.HorseArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 
 /**
- * [CODE COPY] - {@link net.minecraft.client.renderer.entity.layers.HorseArmorLayer}.
+ * [CODE COPY] - {@link HorseArmorLayer}.
  */
 public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
     private final MoaModel model;
@@ -34,19 +38,12 @@ public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
             this.getParentModel().copyPropertiesTo(this.model);
             this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
             this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            float f = 1.0F;
-            float f1 = 1.0F;
-            float f2 = 1.0F;
-            if (itemStack.getItem() instanceof DyeableMoaArmorItem dyeableMoaArmorItem) {
-                int i = dyeableMoaArmorItem.getColor(itemStack);
-                f = (float)(i >> 16 & 255) / 255.0F;
-                f1 = (float)(i >> 8 & 255) / 255.0F;
-                f2 = (float)(i & 255) / 255.0F;
-                VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(dyeableMoaArmorItem.getOverlayTexture()));
-                this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            int i = 0;
+            if (itemStack.is(ItemTags.DYEABLE)) {
+                i = FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(itemStack, -6265536));
             }
             VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(moaArmorItem.getTexture()));
-            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
+            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, i);
         }
     }
 }

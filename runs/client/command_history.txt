@@ -1,0 +1,4 @@
+/locate structure minecraft:trial_chambers
+/tp @s 160 ~ -352
+/tick rate 100
+/tick rate 20

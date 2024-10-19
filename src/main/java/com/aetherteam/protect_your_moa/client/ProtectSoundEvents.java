@@ -13,6 +13,6 @@ public class ProtectSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_MOA_CHEST = register("entity.moa.chest");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String location) {
-        return SOUNDS.register(location, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ProtectYourMoa.MODID, location)));
+        return SOUNDS.register(location, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, location)));
     }
 }

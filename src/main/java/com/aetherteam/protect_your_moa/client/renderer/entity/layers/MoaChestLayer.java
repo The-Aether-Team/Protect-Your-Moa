@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public class MoaChestLayer extends RenderLayer<Moa, MoaModel> {
-    private static final ResourceLocation CHEST_LOCATION = new ResourceLocation(ProtectYourMoa.MODID, "textures/entity/moa/chest/moa_chest.png");
+    private static final ResourceLocation CHEST_LOCATION = ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "textures/entity/moa/chest/moa_chest.png");
 
     private final MoaChestModel model;
 
@@ -33,7 +33,7 @@ public class MoaChestLayer extends RenderLayer<Moa, MoaModel> {
             this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
             this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(CHEST_LOCATION));
-            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
         }
     }
 }

@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
  * [CODE COPY] - {@link net.minecraft.client.gui.screens.inventory.HorseInventoryScreen}.
  */
 public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu> {
-    private static final ResourceLocation MOA_INVENTORY_LOCATION = new ResourceLocation(ProtectYourMoa.MODID, "textures/gui/container/moa.png");
+    private static final ResourceLocation MOA_INVENTORY_LOCATION = ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "textures/gui/container/moa.png");
     /** The EntityHorse whose inventory is currently being accessed. */
     private final Moa moa;
     /** The mouse x-position recorded during the last rendered frame. */
