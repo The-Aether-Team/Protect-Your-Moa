@@ -1,9 +1,7 @@
 package com.aetherteam.protect_your_moa.data;
 
-import com.aetherteam.protect_your_moa.data.generators.ProtectItemModelData;
-import com.aetherteam.protect_your_moa.data.generators.ProtectLanguageData;
-import com.aetherteam.protect_your_moa.data.generators.ProtectRecipeData;
-import com.aetherteam.protect_your_moa.data.generators.ProtectSoundData;
+import com.aetherteam.aether.data.generators.tags.AetherBlockTagData;
+import com.aetherteam.protect_your_moa.data.generators.*;
 import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -33,6 +31,10 @@ public class ProtectData {
 
         // Server Data
         generator.addProvider(event.includeServer(), new ProtectRecipeData(packOutput, lookupProvider));
+
+        AetherBlockTagData blockTags = new AetherBlockTagData(packOutput, lookupProvider, fileHelper);
+        generator.addProvider(event.includeServer(), blockTags);
+        generator.addProvider(event.includeServer(), new ProtectItemTagData(packOutput, lookupProvider, blockTags.contentsGetter(), fileHelper));
 
         // pack.mcmeta
         generator.addProvider(true, new PackMetadataGenerator(packOutput).add(PackMetadataSection.TYPE, new PackMetadataSection(

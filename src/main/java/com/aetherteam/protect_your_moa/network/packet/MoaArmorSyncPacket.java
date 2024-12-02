@@ -19,7 +19,6 @@ import java.util.function.Supplier;
 public class MoaArmorSyncPacket extends SyncEntityPacket<MoaArmorAttachment> {
     public static final Type<MoaArmorSyncPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "sync_moa_armor_attachment"));
 
-
     public static final StreamCodec<RegistryFriendlyByteBuf, MoaArmorSyncPacket> STREAM_CODEC = CustomPacketPayload.codec(
             MoaArmorSyncPacket::write,
             MoaArmorSyncPacket::decode);
@@ -31,6 +30,7 @@ public class MoaArmorSyncPacket extends SyncEntityPacket<MoaArmorAttachment> {
     public MoaArmorSyncPacket(int entityId, String key, INBTSynchable.Type type, Object value) {
         super(entityId, key, type, value);
     }
+
     public static MoaArmorSyncPacket decode(RegistryFriendlyByteBuf buf) {
         return new MoaArmorSyncPacket(SyncEntityPacket.decodeEntityValues(buf));
     }

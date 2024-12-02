@@ -38,9 +38,11 @@ public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
             this.getParentModel().copyPropertiesTo(this.model);
             this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
             this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            int i = 0;
-            if (itemStack.is(ItemTags.DYEABLE)) {
+            int i = -1;
+            if (moaArmorItem instanceof DyeableMoaArmorItem dyeableArmor) {
                 i = FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(itemStack, -6265536));
+                VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(dyeableArmor.getOverlayTexture()));
+                this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
             }
             VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(moaArmorItem.getTexture()));
             this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, i);

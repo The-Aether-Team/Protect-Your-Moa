@@ -11,6 +11,8 @@ import com.aetherteam.protect_your_moa.network.packet.clientbound.OpenMoaInvento
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.protocol.game.ClientboundHorseScreenOpenPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -23,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.inventory.HorseInventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.NeoForge;
@@ -66,15 +69,14 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#addAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#addAdditionalSaveData(CompoundTag)}.
      */
-
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
         if (!this.getInventory().getItem(0).isEmpty()) {
-            tag.put("SaddleItem", this.inventory.getItem(0).save(this.getMoa().level().registryAccess()));
+            tag.put("SaddleItem", this.inventory.getItem(0).save(provider));
         }
         if (!this.getInventory().getItem(1).isEmpty()) {
-            tag.put("ArmorItem", this.inventory.getItem(1).save(this.getMoa().level().registryAccess()));
+            tag.put("ArmorItem", this.inventory.getItem(1).save(provider));
         }
         tag.putBoolean("Chested", this.hasChest());
         if (this.hasChest()) {
@@ -84,7 +86,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
                 if (!itemstack.isEmpty()) {
                     CompoundTag slotTag = new CompoundTag();
                     slotTag.putByte("Slot", (byte)i);
-                    itemstack.save(this.getMoa().level().registryAccess());
+                    itemstack.save(provider);
                     list.add(slotTag);
                 }
             }
@@ -98,16 +100,16 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#readAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#readAdditionalSaveData(CompoundTag)}.
      */
-
+    @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
         if (tag.contains("SaddleItem", 10)) {
-            ItemStack itemStack = ItemStack.parse(this.moa.registryAccess(), tag.getCompound("SaddleItem")).orElse(ItemStack.EMPTY);
+            ItemStack itemStack = ItemStack.parse(provider, tag.getCompound("SaddleItem")).orElseThrow();
             if (itemStack.is(Items.SADDLE)) {
                 this.getInventory().setItem(0, itemStack);
             }
         }
         if (tag.contains("ArmorItem", 10)) {
-            ItemStack itemstack = ItemStack.parse(this.moa.registryAccess(), tag.getCompound("ArmorItem")).orElse(ItemStack.EMPTY);
+            ItemStack itemstack = ItemStack.parse(provider, tag.getCompound("ArmorItem")).orElseThrow();
             if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
                 this.getInventory().setItem(1, itemstack);
             }
@@ -120,7 +122,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
                 CompoundTag compoundtag = list.getCompound(i);
                 int j = compoundtag.getByte("Slot") & 255;
                 if (j >= 2 && j < this.inventory.getContainerSize()) {
-                    this.inventory.setItem(j, ItemStack.parse(this.moa.registryAccess(), compoundtag).orElse(ItemStack.EMPTY));
+                    this.inventory.setItem(j, ItemStack.parse(provider, compoundtag).orElseThrow());
                 }
             }
         }
@@ -150,7 +152,6 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link AbstractHorse#containerChanged(Container)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#containerChanged(Container)}.
      */
-
     @Override
     public void containerChanged(Container container) {
         ItemStack oldArmorStack = this.getArmor();
@@ -171,7 +172,6 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link AbstractHorse#updateContainerEquipment()}.<br><br>
      * [CODE COPY] - {@link Horse#updateContainerEquipment()}.
      */
-
     private void updateContainerEquipment() {
         if (!this.getMoa().level().isClientSide()) {
             this.getMoa().setSaddled(!this.getInventory().getItem(0).isEmpty());
@@ -183,17 +183,16 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
     /**
      * [CODE COPY] - {@link Horse#setArmorEquipment(ItemStack)}.
      */
-
     private void setArmorEquipment(ItemStack stack) {
         this.setArmor(stack);
         if (!this.getMoa().level().isClientSide()) {
             AttributeInstance armorAttribute = this.getMoa().getAttribute(Attributes.ARMOR);
             if (armorAttribute != null) {
-                armorAttribute.removeModifier(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "Horse armor bonus"));
+                armorAttribute.removeModifier(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "horse_armor_bonus"));
                 if (this.isArmor(stack)) {
                     int protection = ((MoaArmorItem) stack.getItem()).getProtection();
                     if (protection != 0) {
-                        armorAttribute.addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "Horse armor bonus"), protection, AttributeModifier.Operation.ADD_VALUE));
+                        armorAttribute.addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "horse_armor_bonus"), protection, AttributeModifier.Operation.ADD_VALUE));
                     }
                 }
             }
@@ -203,7 +202,6 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
     /**
      * [CODE COPY] - {@link AbstractHorse#createInventory()}.
      */
-
     public void createInventory() {
         SimpleContainer simplecontainer = this.inventory;
         this.inventory = new SimpleContainer(this.getInventorySize());
@@ -225,15 +223,14 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
     /**
      * [CODE COPY] - {@link ServerPlayer#openHorseInventory(AbstractHorse, Container)}.
      */
-
     public void openInventory(ServerPlayer serverPlayer, Moa moa) {
         if (serverPlayer.containerMenu != serverPlayer.inventoryMenu) {
             serverPlayer.closeContainer();
         }
         serverPlayer.nextContainerCounter();
-        serverPlayer.connection.send(new OpenMoaInventoryPacket(moa.getId(), inventory.getContainerSize(), (byte) serverPlayer.containerMenu.containerId));
-        serverPlayer.containerMenu = new MoaInventoryMenu(serverPlayer.containerMenu.containerId, serverPlayer.getInventory(), inventory, moa);
-        serverPlayer.initInventoryMenu();
+        serverPlayer.connection.send(new OpenMoaInventoryPacket(moa.getId(), inventory.getContainerSize(), moa.getId()));
+        serverPlayer.containerMenu = new MoaInventoryMenu(serverPlayer.containerCounter, serverPlayer.getInventory(), inventory, moa);
+        serverPlayer.initMenu(serverPlayer.containerMenu);
         NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(serverPlayer, serverPlayer.containerMenu));
     }
 
