@@ -6,12 +6,12 @@ orbs:
 parameters:
   artifact-name:
     type: string
-    default: aether_protect_your_moa-1.20.4-1.0.0-neoforge.jar
+    default: aether_protect_your_moa-1.21.1-1.0.0-neoforge.jar
 
 jobs:
   build:
     machine:
-      image: ubuntu-2204:2023.02.1
+      image: ubuntu-2204:2024.08.1
     resource_class: medium
     environment:
       _JAVA_OPTIONS: -Xmx3200m

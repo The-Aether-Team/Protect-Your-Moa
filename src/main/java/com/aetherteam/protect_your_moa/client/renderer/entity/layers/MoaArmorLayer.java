@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 /**
  * [CODE COPY] - {@link net.minecraft.client.renderer.entity.layers.HorseArmorLayer}.
@@ -34,19 +35,13 @@ public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
             this.getParentModel().copyPropertiesTo(this.model);
             this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
             this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            float f = 1.0F;
-            float f1 = 1.0F;
-            float f2 = 1.0F;
-            if (itemStack.getItem() instanceof DyeableMoaArmorItem dyeableMoaArmorItem) {
-                int i = dyeableMoaArmorItem.getColor(itemStack);
-                f = (float)(i >> 16 & 255) / 255.0F;
-                f1 = (float)(i >> 8 & 255) / 255.0F;
-                f2 = (float)(i & 255) / 255.0F;
+            int color = IClientItemExtensions.of(itemStack).getDefaultDyeColor(itemStack); //FastColor.ARGB32.opaque?
+            if (itemStack.getItem() instanceof DyeableMoaArmorItem dyeableMoaArmorItem && color != 0) {
                 VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(dyeableMoaArmorItem.getOverlayTexture()));
-                this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
             }
             VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(moaArmorItem.getTexture()));
-            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
+            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
         }
     }
 }

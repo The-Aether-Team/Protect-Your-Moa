@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "aether_protect_your_moa:zanite_moa_armor"
-            ]
+            "items": "aether_protect_your_moa:zanite_moa_armor"
           }
         ]
       },

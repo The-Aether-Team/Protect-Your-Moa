@@ -6,7 +6,7 @@
       "tag": "aether:gems/zanite"
     },
     "L": {
-      "tag": "forge:leather"
+      "tag": "c:leathers"
     }
   },
   "pattern": [
@@ -15,6 +15,7 @@
     "# #"
   ],
   "result": {
-    "item": "aether_protect_your_moa:zanite_moa_armor"
+    "count": 1,
+    "id": "aether_protect_your_moa:zanite_moa_armor"
   }
 }

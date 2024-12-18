@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_leather": {
+    "has_diamond": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "aether_protect_your_moa:leather_moa_armor"
-            ]
+            "items": "aether_protect_your_moa:diamond_moa_armor"
           }
         ]
       },
@@ -15,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "aether_protect_your_moa:leather_moa_armor"
+        "recipe": "aether_protect_your_moa:diamond_moa_armor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -23,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_leather"
+      "has_diamond"
     ]
   ],
   "rewards": {
     "recipes": [
-      "aether_protect_your_moa:leather_moa_armor"
+      "aether_protect_your_moa:diamond_moa_armor"
     ]
   }
 }

@@ -8,19 +8,19 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 import java.util.Collection;
 import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = ProtectYourMoa.MODID)
+@EventBusSubscriber(modid = ProtectYourMoa.MODID)
 public class EntityListener {
     @SubscribeEvent
-    public static void onInteractWithEntity(PlayerInteractEvent.EntityInteractSpecific event) { //todo doesnt work in here or aether
+    public static void onInteractWithEntity(PlayerInteractEvent.EntityInteractSpecific event) {
         Entity targetEntity = event.getTarget();
         Player player = event.getEntity();
         ItemStack itemStack = event.getItemStack();
@@ -42,7 +42,7 @@ public class EntityListener {
     }
 
     @SubscribeEvent
-    public static void onEntityTick(LivingEvent.LivingTickEvent event) {
+    public static void onEntityTick(EntityTickEvent.Post event) {
         Entity entity = event.getEntity();
         EntityHooks.onUpdate(entity);
     }

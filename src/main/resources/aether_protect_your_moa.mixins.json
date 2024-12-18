@@ -5,14 +5,13 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "aether_protect_your_moa.refmap.json",
   "mixins": [
-    "client.accessor.LayerDefinitionAccessor",
-    "common.MoaMixin",
     "common.MountableAnimalMixin",
-    "common.ServerGamePacketListenerImplMixin"
+    "common.ServerGamePacketListenerImplMixin",
+    "common.accessor.ServerPlayerAccessor"
   ],
   "client": [
-    "client.AetherOverlaysMixin",
-    "client.MultiPlayerGameModeMixin"
+    "client.MultiPlayerGameModeMixin",
+    "client.accessor.LayerDefinitionAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

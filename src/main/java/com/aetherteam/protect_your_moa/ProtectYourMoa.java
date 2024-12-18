@@ -1,17 +1,20 @@
 package com.aetherteam.protect_your_moa;
 
+import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
 import com.aetherteam.protect_your_moa.data.ProtectData;
 import com.aetherteam.protect_your_moa.item.ProtectItems;
+import com.aetherteam.protect_your_moa.item.combat.GravititeMoaArmorItem;
 import com.aetherteam.protect_your_moa.network.packet.MoaArmorSyncPacket;
 import com.aetherteam.protect_your_moa.network.packet.clientbound.OpenMoaInventoryPacket;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
@@ -22,6 +25,7 @@ public class ProtectYourMoa {
 
     public ProtectYourMoa(IEventBus bus, Dist dist) {
         bus.addListener(ProtectData::dataSetup);
+        bus.addListener(this::commonSetup);
         bus.addListener(this::registerPackets);
 
         DeferredRegister<?>[] registers = {
@@ -35,13 +39,17 @@ public class ProtectYourMoa {
         }
     }
 
-    public void registerPackets(RegisterPayloadHandlerEvent event) {
-        IPayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
+    public void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> Moa.registerJumpOverlayTextureOverride(GravititeMoaArmorItem.BONUS_JUMPS_ID, GravititeMoaArmorItem.TEXTURE_JUMPS));
+    }
+
+    public void registerPackets(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
 
         // CLIENTBOUND
-        registrar.play(OpenMoaInventoryPacket.ID, OpenMoaInventoryPacket::decode, payload -> payload.client(OpenMoaInventoryPacket::handle));
+        registrar.playToClient(OpenMoaInventoryPacket.TYPE, OpenMoaInventoryPacket.STREAM_CODEC, OpenMoaInventoryPacket::execute);
 
         // BOTH
-        registrar.play(MoaArmorSyncPacket.ID, MoaArmorSyncPacket::decode, MoaArmorSyncPacket::handle);
+        registrar.playBidirectional(MoaArmorSyncPacket.TYPE, MoaArmorSyncPacket.STREAM_CODEC, MoaArmorSyncPacket::execute);
     }
 }
