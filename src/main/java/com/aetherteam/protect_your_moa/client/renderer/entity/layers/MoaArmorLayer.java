@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
@@ -35,7 +36,7 @@ public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
             this.getParentModel().copyPropertiesTo(this.model);
             this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
             this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            int color = IClientItemExtensions.of(itemStack).getDefaultDyeColor(itemStack); //FastColor.ARGB32.opaque?
+            int color = FastColor.ARGB32.opaque(IClientItemExtensions.of(itemStack).getDefaultDyeColor(itemStack));
             if (itemStack.getItem() instanceof DyeableMoaArmorItem dyeableMoaArmorItem && color != 0) {
                 VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(dyeableMoaArmorItem.getOverlayTexture()));
                 this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
