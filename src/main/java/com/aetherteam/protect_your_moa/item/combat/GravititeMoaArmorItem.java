@@ -20,7 +20,7 @@ public class GravititeMoaArmorItem extends MoaArmorItem {
 
     @Override
     public void tick(Moa moa, ItemStack itemStack) {
-        AttributeInstance jumps = moa.getAttribute(AetherAttributes.MOA_MAX_JUMPS);
+        AttributeInstance jumps = moa.getAttribute(AetherAttributes.MOA_MAX_JUMPS.aetherFabric$getDelegate());
         if (jumps != null) {
             if (!jumps.hasModifier(this.getJumpsModifier().id())) {
                 jumps.addTransientModifier(this.getJumpsModifier());
@@ -31,7 +31,7 @@ public class GravititeMoaArmorItem extends MoaArmorItem {
 
     @Override
     public void onUnequip(Moa moa, ItemStack itemStack) {
-        AttributeInstance jumps = moa.getAttribute(AetherAttributes.MOA_MAX_JUMPS);
+        AttributeInstance jumps = moa.getAttribute(AetherAttributes.MOA_MAX_JUMPS.aetherFabric$getDelegate());
         if (jumps != null) {
             if (jumps.hasModifier(this.getJumpsModifier().id())) {
                 jumps.removeModifier(this.getJumpsModifier().id());
