@@ -1,14 +1,15 @@
 package com.aetherteam.protect_your_moa.attachment;
 
-import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.resources.ResourceLocation;
 
 public class ProtectDataAttachments {
-    public static final DeferredRegister<AttachmentType<?>> ATTACHMENTS = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, ProtectYourMoa.MODID);
+    public static final AttachmentType<MoaArmorAttachment> MOA_ARMOR = AttachmentRegistry.<MoaArmorAttachment>builder()
+            .persistent(MoaArmorAttachment.CODEC)
+            .initializer(MoaArmorAttachment::new)
+            .buildAndRegister(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "moa_armor"));
 
-    public static final DeferredHolder<AttachmentType<?>, AttachmentType<MoaArmorAttachment>> MOA_ARMOR = ATTACHMENTS.register("moa_armor", () -> AttachmentType.serializable((moa) -> new MoaArmorAttachment((Moa) moa)).build());
+    public static void init() {}
 }

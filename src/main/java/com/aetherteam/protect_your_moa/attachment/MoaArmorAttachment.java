@@ -1,6 +1,7 @@
 package com.aetherteam.protect_your_moa.attachment;
 
 import com.aetherteam.aether.entity.passive.Moa;
+import com.aetherteam.aetherfabric.network.PacketDistributor;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.nitrogen.network.packet.SyncPacket;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
@@ -9,6 +10,11 @@ import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
 import com.aetherteam.protect_your_moa.mixin.mixins.common.accessor.ServerPlayerAccessor;
 import com.aetherteam.protect_your_moa.network.packet.MoaArmorSyncPacket;
 import com.aetherteam.protect_your_moa.network.packet.clientbound.OpenMoaInventoryPacket;
+import com.mojang.serialization.Codec;
+import io.wispforest.endec.Endec;
+import io.wispforest.owo.serialization.CodecUtils;
+import io.wispforest.owo.serialization.RegistriesAttribute;
+import io.wispforest.owo.serialization.format.nbt.NbtEndec;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -26,20 +32,31 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.INBTSerializable;
-import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Triple;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<CompoundTag>, ContainerListener {
+public class MoaArmorAttachment implements INBTSynchable/*, INBTSerializable<CompoundTag>*/, ContainerListener {
+
+    // This is here since I did not want to deal with getting the registry from codec because it is a pain
+    private static final Endec<MoaArmorAttachment> ENDEC = NbtEndec.COMPOUND.xmapWithContext((ctx, compoundTag) -> {
+        var attachment = new MoaArmorAttachment();
+
+        attachment.deserializeNBT(ctx.requireAttributeValue(RegistriesAttribute.REGISTRIES).registryManager(), compoundTag);
+
+        return attachment;
+    }, (ctx, attachment) -> {
+        return attachment.serializeNBT(ctx.requireAttributeValue(RegistriesAttribute.REGISTRIES).registryManager());
+    });
+
+    public static final Codec<MoaArmorAttachment> CODEC = CodecUtils.toCodec(ENDEC);
+
     private static final ResourceLocation ARMOR_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "moa_armor_modifier");
 
-    private final Moa moa;
+    private Moa moa;
 
     private boolean chested;
     private SimpleContainer inventory;
@@ -52,13 +69,38 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
             Map.entry("setShouldSyncChest", Triple.of(Type.BOOLEAN, (object) -> this.setShouldSyncChest((boolean) object), this::shouldSyncChest))
     );
 
+    public MoaArmorAttachment() {
+        this(null);
+    }
+
     public MoaArmorAttachment(Moa moa) {
         this.moa = moa;
         this.createInventory();
     }
 
     public Moa getMoa() {
+        if (this.moa == null) throw new NullPointerException("Unable to get the required Moa Entity from the given MoaArmorAttachment!");
+
         return this.moa;
+    }
+
+    @Nullable
+    private CompoundTag tag = null;
+
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+        this.tag = tag;
+    }
+
+    public MoaArmorAttachment setMoa(Moa moa) {
+        this.moa = moa;
+
+        if (tag != null) {
+            deserializeNBT(moa.registryAccess());
+
+            tag = null;
+        }
+
+        return this;
     }
 
     /**
@@ -66,7 +108,6 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#addAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#addAdditionalSaveData(CompoundTag)}.
      */
-    @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
         if (!this.getInventory().getItem(0).isEmpty()) {
@@ -96,8 +137,7 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.Horse#readAdditionalSaveData(CompoundTag)}.<br><br>
      * [CODE COPY] - {@link net.minecraft.world.entity.animal.horse.AbstractChestedHorse#readAdditionalSaveData(CompoundTag)}.
      */
-    @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+    public void deserializeNBT(HolderLookup.Provider provider) {
         if (tag.contains("SaddleItem", 10)) {
             ItemStack itemStack = ItemStack.parseOptional(provider, tag.getCompound("SaddleItem"));
             if (itemStack.is(Items.SADDLE)) {
@@ -234,7 +274,8 @@ public class MoaArmorAttachment implements INBTSynchable, INBTSerializable<Compo
         PacketDistributor.sendToPlayer(serverPlayer, new OpenMoaInventoryPacket(moa.getId(), this.inventory.getContainerSize(), ((ServerPlayerAccessor) serverPlayer).protect_your_moa$getContainerCounter()));
         serverPlayer.containerMenu = new MoaInventoryMenu(((ServerPlayerAccessor) serverPlayer).protect_your_moa$getContainerCounter(), serverPlayer.getInventory(), this.inventory, moa);
         ((ServerPlayerAccessor) serverPlayer).callInitMenu(serverPlayer.containerMenu);
-        NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(serverPlayer, serverPlayer.containerMenu));
+        // TODO [Fabric Port]: UNKNOWN FUNCTION AS OF THE MOMENT
+        //NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(serverPlayer, serverPlayer.containerMenu));
     }
 
     public void equipSaddle() {

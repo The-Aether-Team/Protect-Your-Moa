@@ -17,7 +17,7 @@ public class ServerGamePacketListenerImplMixin {
         ServerGamePacketListenerImpl impl = (ServerGamePacketListenerImpl) (Object) this;
         Entity entity = impl.getPlayer().getVehicle();
         if (entity instanceof Moa moa) {
-            moa.getData(ProtectDataAttachments.MOA_ARMOR).openInventory(impl.getPlayer(), moa);
+            moa.getAttachedOrCreate(ProtectDataAttachments.MOA_ARMOR).openInventory(impl.getPlayer(), moa);
         }
     }
 }

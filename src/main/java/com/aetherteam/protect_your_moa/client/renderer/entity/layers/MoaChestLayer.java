@@ -28,7 +28,7 @@ public class MoaChestLayer extends RenderLayer<Moa, MoaModel> {
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Moa moa, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (moa.getData(ProtectDataAttachments.MOA_ARMOR).hasChest()) {
+        if (moa.getAttachedOrCreate(ProtectDataAttachments.MOA_ARMOR).hasChest()) {
             this.getParentModel().copyPropertiesTo(this.model);
             this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
             this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

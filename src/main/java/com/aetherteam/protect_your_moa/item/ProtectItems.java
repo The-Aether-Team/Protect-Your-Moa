@@ -1,13 +1,13 @@
 package com.aetherteam.protect_your_moa.item;
 
+import com.aetherteam.aetherfabric.registries.DeferredHolder;
+import com.aetherteam.aetherfabric.registries.DeferredRegister;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.item.combat.DyeableMoaArmorItem;
 import com.aetherteam.protect_your_moa.item.combat.GravititeMoaArmorItem;
 import com.aetherteam.protect_your_moa.item.combat.MoaArmorItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ProtectItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, ProtectYourMoa.MODID);

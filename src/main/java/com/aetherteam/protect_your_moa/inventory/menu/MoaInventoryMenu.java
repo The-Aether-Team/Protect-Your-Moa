@@ -86,11 +86,11 @@ public class MoaInventoryMenu extends AbstractContainerMenu {
     }
 
     public boolean stillValid(Player player) {
-        return this.moa.getData(ProtectDataAttachments.MOA_ARMOR).getInventory() == this.moaContainer && this.moaContainer.stillValid(player) && this.moa.isAlive() && this.moa.distanceTo(player) < 8.0F;
+        return this.moa.getAttachedOrCreate(ProtectDataAttachments.MOA_ARMOR).getInventory() == this.moaContainer && this.moaContainer.stillValid(player) && this.moa.isAlive() && this.moa.distanceTo(player) < 8.0F;
     }
 
     private boolean hasChest(Moa moa) {
-        return this.moa.getData(ProtectDataAttachments.MOA_ARMOR).hasChest();
+        return this.moa.getAttachedOrCreate(ProtectDataAttachments.MOA_ARMOR).hasChest();
     }
 
     public ItemStack quickMoveStack(Player player, int index) {

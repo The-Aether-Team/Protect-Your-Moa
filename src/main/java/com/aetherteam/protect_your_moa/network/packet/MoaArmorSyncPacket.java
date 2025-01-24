@@ -1,16 +1,16 @@
 package com.aetherteam.protect_your_moa.network.packet;
 
+import com.aetherteam.aetherfabric.network.handling.IPayloadContext;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.nitrogen.network.packet.SyncEntityPacket;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.attachment.MoaArmorAttachment;
 import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import oshi.util.tuples.Quartet;
 
 import java.util.function.Supplier;
@@ -39,7 +39,7 @@ public class MoaArmorSyncPacket extends SyncEntityPacket<MoaArmorAttachment> {
 
     @Override
     public Supplier<AttachmentType<MoaArmorAttachment>> getAttachment() {
-        return ProtectDataAttachments.MOA_ARMOR;
+        return () -> ProtectDataAttachments.MOA_ARMOR;
     }
 
     public static void execute(MoaArmorSyncPacket payload, IPayloadContext context) {

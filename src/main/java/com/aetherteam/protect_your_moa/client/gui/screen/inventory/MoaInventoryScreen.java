@@ -32,7 +32,7 @@ public class MoaInventoryScreen extends AbstractContainerScreen<MoaInventoryMenu
         int j = (this.height - this.imageHeight) / 2;
         guiGraphics.blit(MOA_INVENTORY_LOCATION, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
-        if (this.moa.getData(ProtectDataAttachments.MOA_ARMOR).hasChest()) {
+        if (this.moa.getAttachedOrCreate(ProtectDataAttachments.MOA_ARMOR).hasChest()) {
             guiGraphics.blit(MOA_INVENTORY_LOCATION, i + 79, j + 17, 0, this.imageHeight, 7 * 18, 54);
         }
 

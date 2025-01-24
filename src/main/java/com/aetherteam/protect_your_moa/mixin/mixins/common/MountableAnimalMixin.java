@@ -16,7 +16,7 @@ public class MountableAnimalMixin {
     private void equipSaddle(ItemStack stack, SoundSource soundCategory, CallbackInfo ci) {
         MountableAnimal mountableAnimal = (MountableAnimal) (Object) this;
         if (mountableAnimal instanceof Moa moa) {
-            moa.getData(ProtectDataAttachments.MOA_ARMOR).equipSaddle();
+            moa.getAttachedOrCreate(ProtectDataAttachments.MOA_ARMOR).equipSaddle();
         }
     }
 }

@@ -8,28 +8,27 @@ import com.aetherteam.protect_your_moa.client.renderer.entity.ProtectModelLayers
 import com.aetherteam.protect_your_moa.client.renderer.entity.layers.MoaArmorLayer;
 import com.aetherteam.protect_your_moa.client.renderer.entity.layers.MoaChestLayer;
 import com.aetherteam.protect_your_moa.client.renderer.entity.model.MoaChestModel;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 
-@EventBusSubscriber(modid = ProtectYourMoa.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class ProtectRenderers {
-    @SubscribeEvent
-    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(ProtectModelLayers.MOA_ARMOR, () -> MoaModel.createBodyLayer(new CubeDeformation(0.25F)));
-        event.registerLayerDefinition(ProtectModelLayers.MOA_CHEST, MoaChestModel::createBodyLayer);
+    public static void registerLayerDefinitions() {
+        EntityModelLayerRegistry.registerModelLayer(ProtectModelLayers.MOA_ARMOR, () -> MoaModel.createBodyLayer(new CubeDeformation(0.25F)));
+        EntityModelLayerRegistry.registerModelLayer(ProtectModelLayers.MOA_CHEST, MoaChestModel::createBodyLayer);
     }
 
-    @SubscribeEvent
-    public static void addEntityLayers(EntityRenderersEvent.AddLayers event) {
-        LivingEntityRenderer<Moa, MoaModel> renderer = event.getRenderer(AetherEntityTypes.MOA.get());
-        if (renderer != null) {
-            renderer.addLayer(new MoaArmorLayer(renderer, Minecraft.getInstance().getEntityModels()));
-            renderer.addLayer(new MoaChestLayer(renderer, Minecraft.getInstance().getEntityModels()));
+    public static void addEntityLayers(EntityType<? extends LivingEntity> entityType, LivingEntityRenderer<?, ?> renderer, LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper registrationHelper) {
+        if (renderer != null && entityType.equals(AetherEntityTypes.MOA.get())) {
+            var castedRenderer = (LivingEntityRenderer<Moa, MoaModel>)renderer;
+
+            registrationHelper.register(new MoaArmorLayer(castedRenderer, Minecraft.getInstance().getEntityModels()));
+            registrationHelper.register(new MoaChestLayer(castedRenderer, Minecraft.getInstance().getEntityModels()));
         }
     }
 }

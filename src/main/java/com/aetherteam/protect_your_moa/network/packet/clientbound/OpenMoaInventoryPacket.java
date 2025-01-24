@@ -1,6 +1,7 @@
 package com.aetherteam.protect_your_moa.network.packet.clientbound;
 
 import com.aetherteam.aether.entity.passive.Moa;
+import com.aetherteam.aetherfabric.network.handling.IPayloadContext;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.client.MoaArmorClient;
 import net.minecraft.client.Minecraft;
@@ -9,7 +10,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record OpenMoaInventoryPacket(int entityId, int containerSize, int containerId) implements CustomPacketPayload {
     public static final Type<OpenMoaInventoryPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(ProtectYourMoa.MODID, "open_moa_inventory"));

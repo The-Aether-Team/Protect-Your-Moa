@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.minecraft.world.item.component.DyedItemColor;
 
 /**
  * [CODE COPY] - {@link net.minecraft.client.renderer.entity.layers.HorseArmorLayer}.
@@ -31,15 +31,19 @@ public class MoaArmorLayer extends RenderLayer<Moa, MoaModel> {
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Moa moa, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        ItemStack itemStack = moa.getData(ProtectDataAttachments.MOA_ARMOR).getArmor();
+        ItemStack itemStack = moa.getAttachedOrCreate(ProtectDataAttachments.MOA_ARMOR).getArmor();
         if (itemStack != null && !itemStack.isEmpty() && itemStack.getItem() instanceof MoaArmorItem moaArmorItem) {
             this.getParentModel().copyPropertiesTo(this.model);
             this.model.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTick);
             this.model.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            int color = FastColor.ARGB32.opaque(IClientItemExtensions.of(itemStack).getDefaultDyeColor(itemStack));
-            if (itemStack.getItem() instanceof DyeableMoaArmorItem dyeableMoaArmorItem && color != 0) {
-                VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(dyeableMoaArmorItem.getOverlayTexture()));
-                this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            int color = -1;
+            if (itemStack.getItem() instanceof DyeableMoaArmorItem dyeableMoaArmorItem) {
+                color = FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(itemStack, DyedItemColor.LEATHER_COLOR));
+
+                if(color != 0) {
+                    VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(dyeableMoaArmorItem.getOverlayTexture()));
+                    this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                }
             }
             VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(moaArmorItem.getTexture()));
             this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
