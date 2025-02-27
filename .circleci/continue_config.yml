@@ -6,7 +6,7 @@ orbs:
 parameters:
   artifact-name:
     type: string
-    default: aether_protect_your_moa-1.21.1-1.0.0-neoforge.jar
+    default: aether_protect_your_moa-1.21.1-1.0.0-fabric.jar
 
 jobs:
   build:
