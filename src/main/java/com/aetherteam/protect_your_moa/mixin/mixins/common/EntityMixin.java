@@ -14,7 +14,7 @@ public class EntityMixin {
 
     @Inject(
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V", shift = At.Shift.AFTER),
-            method = "load"
+            method = "load(Lnet/minecraft/nbt/CompoundTag;)V"
     )
     private void protectMoa$readEntityAttachments(CompoundTag nbt, CallbackInfo cir) {
         if (((Entity)(Object) this) instanceof Moa moa) {
