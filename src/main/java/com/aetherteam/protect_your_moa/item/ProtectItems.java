@@ -1,7 +1,7 @@
 package com.aetherteam.protect_your_moa.item;
 
-import com.aetherteam.aetherfabric.registries.DeferredHolder;
-import com.aetherteam.aetherfabric.registries.DeferredRegister;
+import com.aetherteam.nitrogen.fabric.registries.DeferredHolder;
+import com.aetherteam.nitrogen.fabric.registries.DeferredRegister;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.item.combat.DyeableMoaArmorItem;
 import com.aetherteam.protect_your_moa.item.combat.GravititeMoaArmorItem;

@@ -1,7 +1,7 @@
 package com.aetherteam.protect_your_moa.network.packet.clientbound;
 
 import com.aetherteam.aether.entity.passive.Moa;
-import com.aetherteam.aetherfabric.network.handling.IPayloadContext;
+import com.aetherteam.nitrogen.fabric.network.handling.IPayloadContext;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.client.MoaArmorClient;
 import net.minecraft.client.Minecraft;

@@ -93,7 +93,7 @@ public class EntityHooks {
                 drops.removeIf(itemEntity -> itemEntity.getItem().is(Items.SADDLE));
                 for (int i = 0; i < inventory.getContainerSize(); ++i) {
                     ItemStack itemStack = inventory.getItem(i);
-                    if (!itemStack.isEmpty() && itemStack.aetherFabric$getEnchantmentLevel(entity.level().registryAccess().aetherFabric$holderOrThrow(Enchantments.VANISHING_CURSE)) == 0) {
+                    if (!itemStack.isEmpty() && itemStack.nitrogen_fabric$getEnchantmentLevel(entity.level().registryAccess().nitrogen_fabric$holderOrThrow(Enchantments.VANISHING_CURSE)) == 0) {
                         ItemEntity itemEntity = new ItemEntity(moa.level(), moa.getX(), moa.getY() + (double) 0.0F, moa.getZ(), itemStack);
                         itemEntity.setDefaultPickUpDelay();
                         drops.add(itemEntity);

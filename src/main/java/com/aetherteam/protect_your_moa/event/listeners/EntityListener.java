@@ -1,17 +1,8 @@
 package com.aetherteam.protect_your_moa.event.listeners;
 
-import com.aetherteam.aetherfabric.events.EntityEvents;
-import com.aetherteam.aetherfabric.events.EntityTickEvents;
-import com.aetherteam.aetherfabric.events.LivingEntityEvents;
-import com.aetherteam.aetherfabric.events.PlayerEvents;
-import com.aetherteam.protect_your_moa.ProtectYourMoa;
+import com.aetherteam.nitrogen.fabric.events.EntityTickEvents;
 import com.aetherteam.protect_your_moa.event.hooks.EntityHooks;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
-import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.fabricmc.fabric.impl.event.interaction.InteractionEventsRouter;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;

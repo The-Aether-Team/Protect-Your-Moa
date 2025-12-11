@@ -1,7 +1,7 @@
 package com.aetherteam.protect_your_moa.attachment;
 
 import com.aetherteam.aether.entity.passive.Moa;
-import com.aetherteam.aetherfabric.network.PacketDistributor;
+import com.aetherteam.nitrogen.fabric.network.PacketDistributor;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.nitrogen.network.packet.SyncPacket;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;

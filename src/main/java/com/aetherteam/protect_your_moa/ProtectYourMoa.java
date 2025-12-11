@@ -1,8 +1,8 @@
 package com.aetherteam.protect_your_moa;
 
 import com.aetherteam.aether.entity.passive.Moa;
-import com.aetherteam.aetherfabric.NetworkRegisterHelper;
-import com.aetherteam.aetherfabric.registries.DeferredRegister;
+import com.aetherteam.nitrogen.fabric.NetworkRegisterHelper;
+import com.aetherteam.nitrogen.fabric.registries.DeferredRegister;
 import com.aetherteam.protect_your_moa.attachment.ProtectDataAttachments;
 import com.aetherteam.protect_your_moa.client.ProtectSoundEvents;
 import com.aetherteam.protect_your_moa.event.listeners.EntityListener;

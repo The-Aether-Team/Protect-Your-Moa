@@ -1,7 +1,7 @@
 package com.aetherteam.protect_your_moa.network.packet;
 
-import com.aetherteam.aetherfabric.network.handling.IPayloadContext;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
+import com.aetherteam.nitrogen.fabric.network.handling.IPayloadContext;
 import com.aetherteam.nitrogen.network.packet.SyncEntityPacket;
 import com.aetherteam.protect_your_moa.ProtectYourMoa;
 import com.aetherteam.protect_your_moa.attachment.MoaArmorAttachment;
